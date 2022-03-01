@@ -1,0 +1,86 @@
+.App {
+  margin: 5px 70px;
+}
+
+.table-primary tbody + tbody,
+.table-primary td,
+.table-primary th,
+.table-primary thead th {
+  border-color: #7abaff;
+}
+
+.table-info tbody + tbody,
+.table-info td,
+.table-info th,
+.table-info thead th {
+  border-color: #86cfda;
+}
+
+.table-secondary tbody + tbody,
+.table-secondary td,
+.table-secondary th,
+.table-secondary thead th {
+  border-color: #b3b7bb;
+}
+
+.table_data .table {
+  text-align: center;
+  border: none;
+}
+
+.table_data .table td {
+  font-size: 14px;
+}
+
+.table_data .table .thead-dark th {
+  color: #fff;
+  background-color: #343a40;
+  border-color: #454d55;
+  font-weight: 400;
+  vertical-align: middle !important;
+  font-size: 14px;
+}
+
+.login-line {
+  padding-bottom: 0px;
+  color: #343a40;
+  font-weight: 500;
+  flex: auto;
+  margin-bottom: 5px;
+}
+
+.login-line button {
+  margin-left: 10px;
+}
+
+.relative {
+  position: relative;
+}
+
+.button_delete button {
+  position: absolute;
+  padding-top: 3px;
+  padding-bottom: 0px;
+  vertical-align: middle;
+}
+
+.th_hide {
+  border: 0 !important;
+  font-size: 0px !important;
+  padding: 0px !important;
+  width: 0px !important;
+  border: none !important;
+  border-right-style: hidden;
+}
+
+.button_add_line:hover {
+  background-color: transparent !important;
+}
+
+.button_add {
+  text-align: end;
+}
+
+.button_add button {
+  margin-top: 7px;
+}
