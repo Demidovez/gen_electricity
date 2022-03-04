@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react";
 import { Button, Container, Row, Table } from "react-bootstrap";
+import { useAppSelector } from "../hooks/hooks";
+import { IDay } from "../types/types";
 import AddDataLine from "./add_data_line";
 
 const TableData = () => {
+  const { days, status } = useAppSelector((state) => state.days);
+
   return (
     <div className="table_data">
       <Container fluid>

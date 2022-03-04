@@ -5,8 +5,17 @@ import TableData from "./components/table";
 import Login from "./components/login";
 import SaveToExcel from "./components/savetoexcel";
 import { Col, Container, Row } from "react-bootstrap";
+import { useAppDispatch } from "./hooks/hooks";
+import { useEffect } from "react";
+import { fetchDaysAction } from "./redux/actions/creators/daysActionCreators";
 
 const App = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchDaysAction());
+  }, [dispatch]);
+
   return (
     <div className="App">
       <Container fluid>

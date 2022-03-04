@@ -16,3 +16,10 @@ export interface IDay {
     isPlus: boolean,
     gkal: number
 }
+
+export enum EStatus {
+    LOADING,
+    DONE,
+    IDLE,
+    ERROR
+}
