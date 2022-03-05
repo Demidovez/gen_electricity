@@ -1,14 +1,18 @@
-import { IAction, IDay, EStatus } from "../../types/types";
+import { IAction, IDay, EStatus, IYear } from "../../types/types";
 import Actions from "../actions/types/daysActionTypes";
 
 interface IDaysState {
   days: IDay[];
-  status: EStatus;
+  years: IYear[];
+  isLoadingDays: boolean;
+  isLoadingYears: boolean;
 }
 
 const initialState: IDaysState = {
   days: [],
-  status: EStatus.DONE,
+  years: [],
+  isLoadingDays: false,
+  isLoadingYears: false,
 };
 
 const dataReducer = (state = initialState, action: IAction): IDaysState => {
@@ -16,13 +20,24 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
     case Actions.FETCH_DAYS:
       return {
         ...state,
-        status: EStatus.LOADING,
+        isLoadingDays: true,
       };
     case Actions.SET_DAYS:
       return {
         ...state,
-        status: EStatus.DONE,
+        isLoadingDays: false,
         days: action.payload,
+      };
+    case Actions.FETCH_YEARS:
+      return {
+        ...state,
+        isLoadingYears: true,
+      };
+    case Actions.SET_YEARS:
+      return {
+        ...state,
+        isLoadingYears: false,
+        years: action.payload,
       };
     default:
       return state;

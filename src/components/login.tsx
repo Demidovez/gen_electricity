@@ -1,8 +1,8 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const Login = () => {
   return (
-    <div className="login-line float-right">
+    <div className="login-line">
       Здравствуйте, n.demidovec@sckk.by!
       <Button variant="danger">Выйти</Button>
     </div>

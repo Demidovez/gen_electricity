@@ -1,9 +1,15 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
-const SaveToExcel = () => {
+interface IProps {
+  isDisable: boolean;
+}
+
+const SaveToExcel = ({ isDisable }: IProps) => {
   return (
     <div className="save-line">
-      <Button variant="primary">Сохранить</Button>
+      <Button variant="primary" disabled={isDisable}>
+        Скачать
+      </Button>
     </div>
   );
 };

@@ -2,43 +2,33 @@
   margin: 5px 70px;
 }
 
-.table-primary tbody + tbody,
-.table-primary td,
-.table-primary th,
-.table-primary thead th {
-  border-color: #7abaff;
+.table-primary:hover td,
+.table-info:hover td,
+.table-secondary:hover td {
+  border-color: #bbc6d9;
 }
 
-.table-info tbody + tbody,
-.table-info td,
-.table-info th,
-.table-info thead th {
-  border-color: #86cfda;
+.table_days {
+  margin-top: 5px;
 }
 
-.table-secondary tbody + tbody,
-.table-secondary td,
-.table-secondary th,
-.table-secondary thead th {
-  border-color: #b3b7bb;
-}
-
-.table_data .table {
+.table_days table {
   text-align: center;
   border: none;
 }
 
-.table_data .table td {
-  font-size: 14px;
-}
-
-.table_data .table .thead-dark th {
+.table_days thead th {
   color: #fff;
   background-color: #343a40;
   border-color: #454d55;
+  border-width: 1px;
   font-weight: 400;
   vertical-align: middle !important;
   font-size: 14px;
+}
+
+.table_days table tbody tr {
+  border-color: #bbc6d9;
 }
 
 .login-line {
@@ -46,7 +36,6 @@
   color: #343a40;
   font-weight: 500;
   flex: auto;
-  margin-bottom: 5px;
 }
 
 .login-line button {
@@ -59,9 +48,22 @@
 
 .button_delete button {
   position: absolute;
-  padding-top: 3px;
-  padding-bottom: 0px;
+  padding: 0.5rem 0.5rem;
   vertical-align: middle;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.button_delete button:hover {
+  text-decoration: underline;
+}
+
+.App button:focus,
+.App button:active,
+.App button:active:focus,
+.button_delete button:focus,
+.table_days input:focus {
+  box-shadow: none;
 }
 
 .th_hide {
@@ -73,8 +75,14 @@
   border-right-style: hidden;
 }
 
-.button_add_line:hover {
+.button_add_line {
+  border: none;
+}
+
+.table_days .button_add_line:hover,
+.table_days .loading_body:hover {
   background-color: transparent !important;
+  --bs-table-hover-bg: transparent;
 }
 
 .button_add {
@@ -84,3 +92,20 @@
 .button_add button {
   margin-top: 7px;
 }
+
+/* .loading_body {
+  border: none;
+} */
+
+/* .loading_body th {
+  border: none !important;
+} */
+
+.loading_body {
+  margin: 50px 0;
+  text-align: center;
+}
+
+/* .loading_body:hover {
+  background-color: transparent !important;
+} */
