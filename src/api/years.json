@@ -1,6 +1,6 @@
 [
     {
-        "year": 2017,
+        "date": 2017,
         "production": 1014,
         "total_consumed": 826.6,
         "ZBC_consumed": 763.2,
@@ -11,7 +11,7 @@
         "gkal": 112
     },
     {
-        "year": 2018,
+        "date": 2018,
         "production": 2014,
         "total_consumed": 2826.6,
         "ZBC_consumed": 2763.2,
@@ -22,7 +22,7 @@
         "gkal": 2112
     },
     {
-        "year": 2019,
+        "date": 2019,
         "production": 3014,
         "total_consumed": 3826.6,
         "ZBC_consumed": 3763.2,
@@ -33,7 +33,7 @@
         "gkal": 3112
     },
     {
-        "year": 2020,
+        "date": 2020,
         "production": 4014,
         "total_consumed": 4826.6,
         "ZBC_consumed": 4763.2,
@@ -42,6 +42,17 @@
         "sold": 4241.1,
         "RUP_consumed": 40,
         "gkal": 412
+    },
+    {
+        "date": 2022,
+        "production": 5014,
+        "total_consumed": 5826.6,
+        "ZBC_consumed": 5763.2,
+        "generation": 51067.7,
+        "procentage": 5129.17,
+        "sold": 5241.1,
+        "RUP_consumed": 50,
+        "gkal": 512
     }
     
 ]

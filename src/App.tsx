@@ -1,12 +1,12 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import "antd/dist/antd.css";
 import "./style/style.css";
 import TableData from "./components/table";
 import Login from "./components/login";
 import SaveToExcel from "./components/savetoexcel";
-import { Container, Row, Stack } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { useEffect } from "react";
 import { fetchYearsAction } from "./redux/actions/creators/yearsActionCreators";
+import { Col, Row } from "antd";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -19,16 +19,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <Container fluid>
-        <Row>
-          <Stack direction="horizontal">
-            <SaveToExcel isDisable={isLoadingYears} />
-            <div className="ms-auto">
-              <Login />
-            </div>
-          </Stack>
-        </Row>
-      </Container>
+      <Row justify="space-between">
+        <Col flex="auto">
+          <SaveToExcel isDisable={isLoadingYears} />
+        </Col>
+        <Col>
+          <Login />
+        </Col>
+      </Row>
       <TableData />
     </div>
   );

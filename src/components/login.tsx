@@ -1,10 +1,14 @@
-import { Button } from "react-bootstrap";
+import { Button, Space } from "antd";
 
 const Login = () => {
   return (
     <div className="login-line">
-      Здравствуйте, n.demidovec@sckk.by!
-      <Button variant="danger">Выйти</Button>
+      <Space size="middle">
+        Здравствуйте, n.demidovec@sckk.by!
+        <Button size="large" danger>
+          Выйти
+        </Button>
+      </Space>
     </div>
   );
 };

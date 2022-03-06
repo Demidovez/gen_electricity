@@ -3,15 +3,22 @@ import TrMonth from "./tr_month";
 
 interface IProps {
   kvartal: IKvartal;
+  isShow: boolean;
 }
 
-const TrKvartal = ({ kvartal }: IProps) => {
+const TrKvartal = ({ kvartal, isShow }: IProps) => {
   return (
     <>
       {kvartal.months.map((month) => {
-        return <TrMonth month={month} key={month.number + "_" + month.year} />;
+        return (
+          <TrMonth
+            month={month}
+            key={month.number + "_" + month.year}
+            isShow={isShow}
+          />
+        );
       })}
-      <tr className="table-info">
+      <tr className={`table-info ${isShow && "hide-line"}`}>
         <td>
           {kvartal.number} квартал {kvartal.year}
         </td>

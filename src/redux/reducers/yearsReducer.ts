@@ -36,7 +36,7 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
         ...state,
         isLoadingYear: false,
         years: state.years.map((year) => {
-          if (year.year === action.payload.year) {
+          if (year.date === action.payload.date) {
             return action.payload;
           } else {
             return year;

@@ -1,5 +1,4 @@
 import { IDay } from "../types/types";
-import { Button } from "react-bootstrap";
 
 interface IProps {
   day: IDay;
@@ -21,7 +20,7 @@ const TrDay = ({ day }: IProps) => {
       <td>{day.isPlus && "+"}</td>
       <td>{day.gkal}</td>
       <td className="button_delete th_hide">
-        <Button variant="link">Удалить</Button>
+        <button>Удалить</button>
       </td>
     </tr>
   );

@@ -65,7 +65,7 @@
         "gkal": 5
     },
     {
-        "date": "Tue Dec 01 2020 15:53:25 GMT+0300",
+        "date": "Tue Dec 02 2020 15:53:25 GMT+0300",
         "production": 6,
         "total_consumed": 6.6,
         "ZBC_consumed": 6.2,
@@ -105,16 +105,42 @@
     },
     {
         "date": "Tue Jun 01 2022 15:53:25 GMT+0300",
-        "production": 9,
-        "total_consumed": 9.6,
-        "ZBC_consumed": 9.2,
-        "generation": 9.7,
-        "procentage": 9.17,
-        "sold": 9.1,
-        "RUP_consumed": 9,
-        "power": 9,
+        "production": 91,
+        "total_consumed": 91.6,
+        "ZBC_consumed": 91.2,
+        "generation": 91.7,
+        "procentage": 91.17,
+        "sold": 91.1,
+        "RUP_consumed": 91,
+        "power": 91,
         "isPlus": true,
-        "gkal": 9
+        "gkal": 91
+    },
+    {
+        "date": "Tue Jun 02 2022 15:53:25 GMT+0300",
+        "production": 92,
+        "total_consumed": 92.6,
+        "ZBC_consumed": 92.2,
+        "generation": 92.7,
+        "procentage": 92.17,
+        "sold": 92.1,
+        "RUP_consumed": 92,
+        "power": 92,
+        "isPlus": false,
+        "gkal": 92
+    },
+    {
+        "date": "Tue Jun 03 2022 15:53:25 GMT+0300",
+        "production": 93,
+        "total_consumed": 93.6,
+        "ZBC_consumed": 93.2,
+        "generation": 93.7,
+        "procentage": 93.17,
+        "sold": 93.1,
+        "RUP_consumed": 93,
+        "power": 93,
+        "isPlus": true,
+        "gkal": 93
     },
     {
         "date": "Tue Feb 01 2022 15:53:25 GMT+0300",

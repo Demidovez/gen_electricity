@@ -1,4 +1,5 @@
-import { Button } from "react-bootstrap";
+import { Button } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 
 interface IProps {
   isDisable: boolean;
@@ -7,7 +8,12 @@ interface IProps {
 const SaveToExcel = ({ isDisable }: IProps) => {
   return (
     <div className="save-line">
-      <Button variant="primary" disabled={isDisable}>
+      <Button
+        type="primary"
+        icon={<DownloadOutlined />}
+        size="large"
+        disabled={isDisable}
+      >
         Скачать
       </Button>
     </div>
