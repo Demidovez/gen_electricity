@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import daysReducer from "./daysReducer";
+import yearsReducer from "./yearsReducer";
 
 const rootReducer = combineReducers({
-  days: daysReducer,
+  years: yearsReducer,
 });
 
 export default rootReducer;

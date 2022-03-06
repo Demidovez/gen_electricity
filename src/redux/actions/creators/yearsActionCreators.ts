@@ -1,13 +1,13 @@
 import { IAction, IDay, IYear } from "../../../types/types";
-import Actions from "../types/daysActionTypes";
+import Actions from "../types/yearsActionTypes";
 
-export const fetchDaysAction = (): IAction => ({
-  type: Actions.FETCH_DAYS,
-  payload: null,
+export const fetchYearAction = (data: number): IAction => ({
+  type: Actions.FETCH_YEAR,
+  payload: data,
 });
 
-export const setDaysAction = (data: IDay[]): IAction => ({
-  type: Actions.SET_DAYS,
+export const setYearAction = (data: IYear): IAction => ({
+  type: Actions.SET_YEAR,
   payload: data,
 });
 

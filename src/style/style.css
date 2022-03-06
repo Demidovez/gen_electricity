@@ -1,5 +1,6 @@
 .App {
   margin: 5px 70px;
+  min-height: 100vh;
 }
 
 .table-primary:hover td,
@@ -93,19 +94,7 @@
   margin-top: 7px;
 }
 
-/* .loading_body {
-  border: none;
-} */
-
-/* .loading_body th {
-  border: none !important;
-} */
-
 .loading_body {
   margin: 50px 0;
   text-align: center;
 }
-
-/* .loading_body:hover {
-  background-color: transparent !important;
-} */

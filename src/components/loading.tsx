@@ -1,6 +1,6 @@
 import { Spinner } from "react-bootstrap";
 
-const LoadingBody = () => {
+const Loading = () => {
   return (
     <div className="loading_body">
       <Spinner animation="border" variant="secondary" />
@@ -8,4 +8,4 @@ const LoadingBody = () => {
   );
 };
 
-export default LoadingBody;
+export default Loading;

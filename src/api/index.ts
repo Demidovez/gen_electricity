@@ -2,21 +2,6 @@ import { IDay, IYear } from "../types/types";
 import days from "./days.json";
 import years from "./years.json";
 
-export const fetchDays = async (): Promise<{ data: IDay[] }> => {
-  return {
-    data: days
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .map((day) => {
-        const date = new Date(day.date);
-
-        return {
-          ...day,
-          date,
-        };
-      }),
-  };
-};
-
 export const fetchYears = async (): Promise<{ data: IYear[] }> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -24,7 +9,24 @@ export const fetchYears = async (): Promise<{ data: IYear[] }> => {
     data: years.map((year) => {
       return {
         ...year,
+        kvartals: [],
       };
     }),
   };
+};
+
+export const fetchYear = async (
+  year: number
+): Promise<{ data: IYear | undefined }> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const findYear = years.find((yearFromList) => yearFromList.year === year);
+
+  if (findYear) {
+    return {
+      data: { ...findYear, kvartals: [] },
+    };
+  } else {
+    return { data: undefined };
+  }
 };

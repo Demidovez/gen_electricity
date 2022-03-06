@@ -1,8 +1,8 @@
 import { all } from "redux-saga/effects";
-import daysSaga from "./daysSaga";
+import yearsSaga from "./yearsSaga";
 
 function* rootSaga() {
-  yield all([daysSaga()]);
+  yield all([yearsSaga()]);
 }
 
 export default rootSaga;

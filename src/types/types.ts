@@ -27,6 +27,7 @@ export interface IYear {
   sold: number;
   RUP_consumed: number;
   gkal: number;
+  kvartals: IKvartal[];
 }
 
 export interface IKvartal {
@@ -40,6 +41,7 @@ export interface IKvartal {
   sold: number;
   RUP_consumed: number;
   gkal: number;
+  months: IMonth[];
 }
 
 export interface IMonth {
@@ -53,6 +55,8 @@ export interface IMonth {
   sold: number;
   RUP_consumed: number;
   gkal: number;
+  isActive: boolean;
+  days: IDay[];
 }
 
 export enum EStatus {
