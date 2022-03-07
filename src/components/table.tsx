@@ -1,202 +1,12 @@
-import { Button, Input, Table } from "antd";
-import { useContext, useEffect, useRef, useState } from "react";
-import { FormInstance } from "antd/lib/form";
+import { Input, InputNumber, Popconfirm, Table, Typography } from "antd";
+import { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import {
-  ColumnTypes,
-  EditableCellProps,
-  EditableRowProps,
-  IData,
-  TColumn,
-} from "../types/types";
-// import EditableCell from "./editable_cell";
-// import EditableRow from "./editable_row";
+import { ColumnTypes, EditableCellProps, IData } from "../types/types";
 import Loading from "./loading";
 import React from "react";
 import { updateDayAction } from "../redux/actions/creators/yearsActionCreators";
-
-const EditableContext = React.createContext<FormInstance<any> | null>(null);
-
-const EditableCell: React.FC<EditableCellProps> = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  handleSave,
-  ...restProps
-}) => {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef<Input>(null);
-  const form = useContext(EditableContext)!;
-
-  useEffect(() => {
-    if (editing) {
-      inputRef.current!.focus();
-    }
-  }, [editing]);
-
-  const toggleEdit = () => {
-    setEditing(!editing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-  };
-
-  const save = async () => {
-    try {
-      const values = await form.validateFields();
-
-      toggleEdit();
-      handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      console.log("Save failed:", errInfo);
-    }
-  };
-
-  let childNode = children;
-
-  if (editable) {
-    childNode = editing ? (
-      <Form.Item
-        style={{ margin: 0 }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-          },
-        ]}
-      >
-        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-      </Form.Item>
-    ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={toggleEdit}
-      >
-        {children}
-      </div>
-    );
-  }
-
-  return <td {...restProps}>{childNode}</td>;
-};
-
-const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
-  const [form] = Form.useForm();
-
-  return (
-    <Form form={form} component={false}>
-      <EditableContext.Provider value={form}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
-  );
-};
-
-const columns: TColumn[] = [
-  {
-    title: "Дата/Месяц/Год",
-    dataIndex: "date",
-    key: "date",
-    width: 150,
-    editable: true,
-  },
-  {
-    title: "Выработка целлюлозы, тонн.",
-    dataIndex: "production",
-    key: "production",
-    width: 150,
-    editable: true,
-  },
-  {
-    title: "Прямое потребление",
-    editable: true,
-    children: [
-      {
-        title: "Всего, тыс. кВтч",
-        dataIndex: "total_consumed",
-        key: "total_consumed",
-        editable: true,
-      },
-      {
-        title: "в том числе ЗБЦ, тыс. кВтч",
-        dataIndex: "ZBC_consumed",
-        key: "ZBC_consumed",
-        editable: true,
-      },
-    ],
-  },
-
-  {
-    title: "Выработка электроэнергии, тыс. кВтч",
-    dataIndex: "generation",
-    key: "generation",
-    width: 150,
-    editable: true,
-  },
-  {
-    title: "% от общего потребления",
-    dataIndex: "procentage",
-    key: "procentage",
-    width: 150,
-    editable: false,
-  },
-  {
-    title: "Продано, тыс. кВтч",
-    dataIndex: "sold",
-    key: "sold",
-    editable: true,
-  },
-  {
-    title: 'Потреблено от РУП "Гомельэнерго"',
-    editable: true,
-    children: [
-      {
-        title: "тыс. кВтч",
-        dataIndex: "RUP_consumed",
-        key: "RUP_consumed",
-        width: 90,
-        editable: true,
-      },
-      {
-        title: "Мощность, МВт",
-        dataIndex: "power",
-        key: "power",
-        colSpan: 2,
-        editable: true,
-      },
-      {
-        title: "",
-        dataIndex: "plus",
-        key: "plus",
-        colSpan: 0,
-        editable: true,
-      },
-      {
-        title: "Гкал",
-        dataIndex: "gkal",
-        key: "gkal",
-        width: 70,
-        editable: true,
-      },
-    ],
-  },
-  {
-    title: "",
-    dataIndex: "operation",
-    key: "operation",
-    colSpan: 0,
-    editable: false,
-    align: "left" as "left",
-    render: () => (
-      <Button type="link" className="button_delete">
-        Удалить
-      </Button>
-    ),
-  },
-];
+import EditableCell from "./editable_cell";
 
 const TableData = () => {
   const dispatch = useAppDispatch();
@@ -205,50 +15,184 @@ const TableData = () => {
     (state) => state.years
   );
 
-  const [dataSource, setDataSource] = useState<IData[]>([]);
+  const [form] = Form.useForm();
+  const [data, setData] = useState<IData[]>([]);
+  const [editingKey, setEditingKey] = useState("");
 
   useEffect(() => {
-    setDataSource(years);
+    setData(years);
   }, [years]);
 
-  const handleDelete = (key: React.Key) => {
-    setDataSource(dataSource.filter((item) => item.key !== key));
+  const isEditing = (record: IData) => record.key === editingKey;
+
+  const edit = (record: Partial<IData> & { key: React.Key }) => {
+    form.setFieldsValue({ ...record });
+    setEditingKey(record.key);
   };
 
-  const handleSave = (row: IData) => {
-    const newData = dataSource.map((year) => ({
-      ...year,
-      children: year.children?.map((kvartal) => ({
-        ...kvartal,
-        children: kvartal.children?.map((month) => ({
-          ...month,
-          children: month.children?.map((day) => {
-            if (day.key === row.key) {
-              return {
-                ...day,
-                ...row,
-              };
-            } else {
-              return day;
-            }
-          }),
-        })),
-      })),
-    }));
-
-    dispatch(updateDayAction(row));
-
-    setDataSource(newData);
+  const cancel = () => {
+    setEditingKey("");
   };
 
-  const components = {
-    body: {
-      row: EditableRow,
-      cell: EditableCell,
+  const save = async (key: React.Key) => {
+    try {
+      const row = (await form.validateFields()) as IData;
+
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.key);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+      } else {
+        newData.push(row);
+        setData(newData);
+      }
+
+      setData(newData);
+      setEditingKey("");
+
+      dispatch(updateDayAction(row));
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Дата/Месяц/Год",
+      dataIndex: "date",
+      key: "date",
+      width: "12%",
+      editable: true,
     },
-  };
+    {
+      title: "Выработка целлюлозы, тонн.",
+      dataIndex: "production",
+      key: "production",
+      width: "9%",
+      editable: true,
+    },
+    {
+      title: "Прямое потребление",
+      editable: true,
+      children: [
+        {
+          title: "Всего, тыс. кВтч",
+          dataIndex: "total_consumed",
+          key: "total_consumed",
+          editable: true,
+          width: "9%",
+        },
+        {
+          title: "в том числе ЗБЦ, тыс. кВтч",
+          dataIndex: "ZBC_consumed",
+          key: "ZBC_consumed",
+          editable: true,
+          width: "9%",
+        },
+      ],
+    },
+    {
+      title: "Выработка электроэнергии, тыс. кВтч",
+      dataIndex: "generation",
+      key: "generation",
+      width: "9%",
+      editable: true,
+    },
+    {
+      title: "% от общего потребления",
+      dataIndex: "procentage",
+      key: "procentage",
+      width: "9%",
+      editable: false,
+    },
+    {
+      title: "Продано, тыс. кВтч",
+      dataIndex: "sold",
+      key: "sold",
+      editable: true,
+      width: "9%",
+    },
+    {
+      title: 'Потреблено от РУП "Гомельэнерго"',
+      editable: true,
+      children: [
+        {
+          title: "тыс. кВтч",
+          dataIndex: "RUP_consumed",
+          key: "RUP_consumed",
+          width: "9%",
+          editable: true,
+        },
+        {
+          title: "Мощность, МВт",
+          dataIndex: "power",
+          key: "power",
+          colSpan: 2,
+          editable: true,
+          width: "9%",
+        },
+        {
+          title: "",
+          dataIndex: "plus",
+          key: "plus",
+          colSpan: 0,
+          editable: true,
+          width: "5%",
+        },
+        {
+          title: "Гкал",
+          dataIndex: "gkal",
+          key: "gkal",
+          width: "9%",
+          editable: true,
+        },
+      ],
+    },
+    {
+      title: "",
+      dataIndex: "operation",
+      key: "operation",
+      colSpan: 0,
+      editable: false,
+      align: "left" as "left",
+      render: (_: any, record: IData) => {
+        const editable = isEditing(record);
 
-  const mapColumnsOfTable = (col: TColumn) => {
+        return editable ? (
+          <span>
+            <Typography.Link
+              onClick={() => save(record.key)}
+              style={{ marginRight: 8 }}
+            >
+              Save
+            </Typography.Link>
+            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+              <a>Cancel</a>
+            </Popconfirm>
+          </span>
+        ) : (
+          <Typography.Link
+            disabled={editingKey !== ""}
+            onClick={() => edit(record)}
+          >
+            Edit
+          </Typography.Link>
+        );
+      },
+    },
+    // render: () => (
+    //   <Button type="link" className="button_delete" size="small">
+    //     Удалить
+    //   </Button>
+    // ),
+    //},
+  ];
+
+  const mapColumnsOfTable = (col: any) => {
     if (!col.editable) {
       return col;
     }
@@ -257,10 +201,10 @@ const TableData = () => {
       ...col,
       onCell: (record: IData) => ({
         record,
-        editable: col.editable,
+        inputType: col.dataIndex === "age" ? "number" : "text",
         dataIndex: col.dataIndex,
         title: col.title,
-        handleSave: handleSave,
+        editing: isEditing(record),
       }),
     };
 
@@ -278,15 +222,22 @@ const TableData = () => {
       {isLoadingYears ? (
         <Loading />
       ) : (
-        <Table
-          columns={columnsList as ColumnTypes}
-          components={components}
-          rowClassName={() => "editable-row"}
-          dataSource={dataSource}
-          bordered
-          size="small"
-          pagination={false}
-        />
+        <Form form={form} component={false}>
+          <Table
+            columns={columnsList as ColumnTypes}
+            rowClassName="editable-row"
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+            dataSource={data}
+            bordered
+            size="small"
+            pagination={false}
+            indentSize={0}
+          />
+        </Form>
       )}
     </div>
   );

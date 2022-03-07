@@ -5,28 +5,19 @@ export interface IAction {
   payload: any | null;
 }
 
-export interface EditableCellProps {
-  title: React.ReactNode;
-  editable: boolean;
-  children: React.ReactNode;
-  dataIndex: keyof IData;
+export interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
+  editing: boolean;
+  dataIndex: string;
+  title: any;
+  inputType: "number" | "text";
   record: IData;
-  handleSave: (record: IData) => void;
-}
-
-export interface EditableRowProps {
   index: number;
+  children: React.ReactNode;
 }
 
 export type EditableTableProps = Parameters<typeof Table>[0];
 
 export type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
-
-export type TColumn = ColumnTypes[number] & {
-  editable?: boolean;
-  dataIndex?: string;
-  children?: any[];
-};
 
 export interface IData {
   key: string;

@@ -3,12 +3,6 @@
   min-height: 100vh;
 }
 
-/* .table-primary:hover td,
-.table-info:hover td,
-.table-secondary:hover td {
-  border-color: #bbc6d9;
-} */
-
 .table_days {
   margin-top: 5px;
 }
@@ -73,73 +67,10 @@
   background-color: #ededed !important;
 }
 
-.button_delete {
+/* .button_delete {
   padding: 0;
   line-height: 0;
   height: inherit;
-  /* position: absolute; */
-}
-
-/* .table_days table tbody tr {
-  border-color: #bbc6d9;
-} */
-
-/* .login-line {
-  padding-bottom: 0px;
-  color: #343a40;
-  font-weight: 500;
-  flex: auto;
-} */
-
-/* .login-line button {
-  margin-left: 10px;
-} */
-
-/* .relative {
-  position: relative;
-} */
-
-/* .button_delete button {
-  position: absolute;
-  padding: 0.5rem 0.5rem;
-  vertical-align: middle;
-  font-size: 14px;
-  text-decoration: none;
-} */
-
-/* .button_delete button:hover {
-  text-decoration: underline;
-} */
-
-/* .App button:focus,
-.App button:active,
-.App button:active:focus,
-.button_delete button:focus,
-.table_days input:focus {
-  box-shadow: none;
-} */
-
-/* .th_hide {
-  border: 0 !important;
-  font-size: 0px !important;
-  padding: 0px !important;
-  width: 0px !important;
-  border: none !important;
-  border-right-style: hidden;
-} */
-
-/* .button_add_line {
-  border: none;
-} */
-
-/* .table_days .button_add_line:hover,
-.table_days .loading_body:hover {
-  background-color: transparent !important;
-  --bs-table-hover-bg: transparent;
-} */
-
-/* .button_add {
-  text-align: end;
 } */
 
 .button_add button {
