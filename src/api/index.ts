@@ -1,19 +1,21 @@
-import { IYear } from "../types/types";
+import { IData } from "../types/types";
 import { getKvartalNumber } from "../utils/utils";
-import days from "./days.json";
 import { getDays } from "./get_days";
 import { getKvartals } from "./get_kvartals";
 import { getMonths } from "./get_months";
-import years from "./years.json";
+import axios from "axios";
+import { fetchData } from "./fetch_data";
 
-export const fetchYears = async (): Promise<{ data: IYear[] }> => {
+export const fetchYears = async (): Promise<{ data: IData[] }> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const [years, days] = await fetchData();
 
   const lastYearNumber = years[years.length - 1].date;
 
-  const kvartalsLastYear = getKvartals(days, lastYearNumber);
-  const monthsLastYear = getMonths(days, lastYearNumber).sort(
-    (a, b) => a.number - b.number
+  const kvartalsLastYear = getKvartals(days, parseInt(lastYearNumber));
+  const monthsLastYear = getMonths(days, parseInt(lastYearNumber)).sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
   const lastMonth = monthsLastYear[monthsLastYear.length - 1];
@@ -25,21 +27,21 @@ export const fetchYears = async (): Promise<{ data: IYear[] }> => {
       return {
         ...year,
         key: "year_" + year.date,
-        isShow: year.date === lastYearNumber,
-        kvartals:
+        children:
           year.date === lastYearNumber
             ? kvartalsLastYear.map((kvartal) => ({
                 ...kvartal,
-                months: monthsLastYear
+                children: monthsLastYear
                   .filter(
-                    (month) => kvartal.number === getKvartalNumber(month.number)
+                    (month) =>
+                      kvartal.date ===
+                      getKvartalNumber(parseInt(month.date)).toString()
                   )
                   .map((month) => {
                     return {
                       ...month,
-                      isShow: month.number === lastMonth.number,
-                      days:
-                        month.number === lastMonth.number &&
+                      children:
+                        month.date === lastMonth.date &&
                         month.year === lastMonth.year
                           ? daysLastMonth
                           : [],
@@ -54,26 +56,30 @@ export const fetchYears = async (): Promise<{ data: IYear[] }> => {
 
 export const fetchYear = async (
   date: number
-): Promise<{ data: IYear | undefined }> => {
+): Promise<{ data: IData | undefined }> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const findYear = years.find((yearFromList) => yearFromList.date === date);
+  const [years, days] = await fetchData();
+
+  const findYear = years.find(
+    (yearFromList) => yearFromList.date === date.toString()
+  );
 
   if (findYear) {
-    const kvartals = getKvartals(days, findYear.date);
-    const months = getMonths(days, findYear.date).sort(
-      (a, b) => a.number - b.number
+    const kvartals = getKvartals(days, parseInt(findYear.date));
+    const months = getMonths(days, parseInt(findYear.date)).sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
     return {
       data: {
         ...findYear,
         key: "year_" + findYear.date,
-        isShow: true,
-        kvartals: kvartals.map((kvartal) => ({
+        children: kvartals.map((kvartal) => ({
           ...kvartal,
-          months: months.filter(
-            (month) => kvartal.number === getKvartalNumber(month.number)
+          children: months.filter(
+            (month) =>
+              kvartal.date === getKvartalNumber(parseInt(month.date)).toString()
           ),
         })),
       },
@@ -81,4 +87,11 @@ export const fetchYear = async (
   } else {
     return { data: undefined };
   }
+};
+
+export const updateDayData = (data: IData) => {
+  axios
+    .post("http://localhost:9081/update_day", { data })
+    .then(() => console.log("UPDATED!"))
+    .catch((err) => console.log(err));
 };

@@ -20,7 +20,7 @@
 
 .table_days thead th {
   color: #fff;
-  background-color: #343a40;
+  background-color: #343a40 !important;
   border-color: #454d55 !important;
   font-weight: 400;
   vertical-align: middle !important;
@@ -32,14 +32,52 @@
   background-color: #b8daff;
 }
 
-.table_days tr[data-row-key^="year_"]:hover td {
-  background-color: #9dc0e5 !important;
+.table_days tr[data-row-key^="kvartal_"] {
+  background-color: #c3e6cb;
+}
+
+.table_days tr[data-row-key^="month_"] {
+  background-color: #d6d8db;
+}
+
+.table_days tr[data-row-key^="year_"]:hover td,
+.table_days tr[data-row-key^="kvartal_"]:hover td,
+.table_days tr[data-row-key^="month_"]:hover td {
   border-color: #a1a8b5 !important;
   cursor: pointer;
 }
 
-.table_days tr[data-row-key^="year_"] td {
+.table_days tr[data-row-key^="year_"] td,
+.table_days tr[data-row-key^="kvartal_"] td,
+.table_days tr[data-row-key^="month_"] td {
   border-color: #b1b9c7 !important;
+}
+
+.table_days tr[data-row-key^="day_"] td {
+  border-color: #d8dadd !important;
+}
+
+.table_days tr[data-row-key^="year_"]:hover td {
+  background-color: #9dc0e5 !important;
+}
+
+.table_days tr[data-row-key^="kvartal_"]:hover td {
+  background-color: #add1b5 !important;
+}
+
+.table_days tr[data-row-key^="month_"]:hover td {
+  background-color: #c5c6c7 !important;
+}
+
+.table_days tr[data-row-key^="day_"]:hover td {
+  background-color: #ededed !important;
+}
+
+.button_delete {
+  padding: 0;
+  line-height: 0;
+  height: inherit;
+  /* position: absolute; */
 }
 
 /* .table_days table tbody tr {

@@ -1,8 +1,8 @@
-import { IDay, IDayRaw, IKvartal } from "../types/types";
+import { IData } from "../types/types";
 import { getKvartalNumber } from "../utils/utils";
 
-export const getKvartals = (days: IDayRaw[], year: number): IKvartal[] => {
-  let kvartals: IKvartal[] = [];
+export const getKvartals = (days: IData[], year: number): IData[] => {
+  let kvartals: IData[] = [];
 
   days
     .filter((day) => new Date(day.date).getFullYear() === year)
@@ -11,13 +11,14 @@ export const getKvartals = (days: IDayRaw[], year: number): IKvartal[] => {
 
       const kvartal = kvartals.find(
         (kvartal) =>
-          kvartal.number === getKvartalNumber(month) && kvartal.year === year
+          kvartal.date === getKvartalNumber(month).toString() &&
+          kvartal.year === year
       );
 
       if (kvartal) {
         kvartals = kvartals.map((oldKvartal) => {
           if (
-            oldKvartal.number === kvartal.number &&
+            oldKvartal.date === kvartal.date &&
             oldKvartal.year === kvartal.year
           ) {
             return {
@@ -37,7 +38,8 @@ export const getKvartals = (days: IDayRaw[], year: number): IKvartal[] => {
         });
       } else {
         kvartals.push({
-          number: getKvartalNumber(month),
+          key: `kvartal_${getKvartalNumber(month)}_${year}`,
+          date: getKvartalNumber(month).toString(),
           year: year,
           production: day.production,
           total_consumed: day.total_consumed,
@@ -47,7 +49,7 @@ export const getKvartals = (days: IDayRaw[], year: number): IKvartal[] => {
           sold: day.sold,
           RUP_consumed: day.RUP_consumed,
           gkal: day.gkal,
-          months: [],
+          children: [],
         });
       }
     });

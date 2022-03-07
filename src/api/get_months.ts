@@ -1,7 +1,8 @@
-import { IDayRaw, IMonth } from "../types/types";
+import { IData } from "../types/types";
+import { summa } from "../utils/utils";
 
-export const getMonths = (days: IDayRaw[], year: number): IMonth[] => {
-  let months: IMonth[] = [];
+export const getMonths = (days: IData[], year: number): IData[] => {
+  let months: IData[] = [];
 
   days
     .filter((day) => new Date(day.date).getFullYear() === year)
@@ -9,25 +10,25 @@ export const getMonths = (days: IDayRaw[], year: number): IMonth[] => {
       const monthId = new Date(day.date).getMonth() + 1;
 
       const month = months.find(
-        (month) => month.number === monthId && month.year === year
+        (month) => month.date === monthId.toString() && month.year === year
       );
 
       if (month) {
         months = months.map((oldMonth) => {
-          if (
-            oldMonth.number === month.number &&
-            oldMonth.year === month.year
-          ) {
+          if (oldMonth.date === month.date && oldMonth.year === month.year) {
             return {
               ...oldMonth,
-              production: oldMonth.production + day.production,
-              total_consumed: oldMonth.total_consumed + day.total_consumed,
-              ZBC_consumed: oldMonth.ZBC_consumed + day.ZBC_consumed,
-              generation: oldMonth.generation + day.generation,
-              procentage: oldMonth.procentage + day.procentage,
-              sold: oldMonth.sold + day.sold,
-              RUP_consumed: oldMonth.RUP_consumed + day.RUP_consumed,
-              gkal: oldMonth.gkal + day.gkal,
+              production: summa(oldMonth.production, day.production),
+              total_consumed: summa(
+                oldMonth.total_consumed,
+                day.total_consumed
+              ),
+              ZBC_consumed: summa(oldMonth.ZBC_consumed, day.ZBC_consumed),
+              generation: summa(oldMonth.generation, day.generation),
+              procentage: summa(oldMonth.procentage, day.procentage),
+              sold: summa(oldMonth.sold, day.sold),
+              RUP_consumed: summa(oldMonth.RUP_consumed, day.RUP_consumed),
+              gkal: summa(oldMonth.gkal, day.gkal),
             };
           } else {
             return oldMonth;
@@ -35,7 +36,8 @@ export const getMonths = (days: IDayRaw[], year: number): IMonth[] => {
         });
       } else {
         months.push({
-          number: monthId,
+          key: `month_${monthId}_${year}`,
+          date: monthId.toString(),
           year: year,
           production: day.production,
           total_consumed: day.total_consumed,
@@ -45,8 +47,7 @@ export const getMonths = (days: IDayRaw[], year: number): IMonth[] => {
           sold: day.sold,
           RUP_consumed: day.RUP_consumed,
           gkal: day.gkal,
-          isShow: false,
-          days: [],
+          children: [],
         });
       }
     });

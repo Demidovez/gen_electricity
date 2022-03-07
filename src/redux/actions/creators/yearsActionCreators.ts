@@ -1,4 +1,4 @@
-import { IAction, IDay, IYear } from "../../../types/types";
+import { IAction, IData } from "../../../types/types";
 import Actions from "../types/yearsActionTypes";
 
 export const fetchYearAction = (data: number): IAction => ({
@@ -6,7 +6,7 @@ export const fetchYearAction = (data: number): IAction => ({
   payload: data,
 });
 
-export const setYearAction = (data: IYear): IAction => ({
+export const setYearAction = (data: IData): IAction => ({
   type: Actions.SET_YEAR,
   payload: data,
 });
@@ -16,7 +16,12 @@ export const fetchYearsAction = (): IAction => ({
   payload: null,
 });
 
-export const setYearsAction = (data: IYear[]): IAction => ({
+export const setYearsAction = (data: IData[]): IAction => ({
   type: Actions.SET_YEARS,
+  payload: data,
+});
+
+export const updateDayAction = (data: IData): IAction => ({
+  type: Actions.UPDATE_DAY,
   payload: data,
 });

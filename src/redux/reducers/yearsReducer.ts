@@ -1,8 +1,8 @@
-import { IAction, IYear } from "../../types/types";
+import { IAction, IData } from "../../types/types";
 import Actions from "../actions/types/yearsActionTypes";
 
 interface IDaysState {
-  years: IYear[];
+  years: IData[];
   isLoadingYears: boolean;
   isLoadingYear: boolean;
 }
