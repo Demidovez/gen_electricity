@@ -47,6 +47,7 @@ export const getMonths = (days: IData[], year: number): IData[] => {
           sold: day.sold,
           RUP_consumed: day.RUP_consumed,
           gkal: day.gkal,
+          expandable: true,
           children: [],
         });
       }

@@ -33,6 +33,7 @@ export interface IData {
   power?: number;
   plus?: string;
   gkal: number;
+  expandable?: boolean;
   children?: IData[];
 }
 

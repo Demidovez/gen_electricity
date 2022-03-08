@@ -10,6 +10,7 @@
 .table_days table {
   text-align: center;
   border: none;
+  margin-bottom: 20px;
 }
 
 .table_days thead th {
@@ -67,17 +68,15 @@
   background-color: #ededed !important;
 }
 
-/* .button_delete {
-  padding: 0;
-  line-height: 0;
-  height: inherit;
-} */
-
-.button_add button {
-  margin-top: 7px;
+.table_days tfoot td {
+  border-color: #d8dadd !important;
 }
 
 .loading_body {
   margin: 50px 0;
   text-align: center;
+}
+
+.full_width {
+  width: 100%;
 }

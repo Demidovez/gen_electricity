@@ -27,6 +27,7 @@ export const fetchYears = async (): Promise<{ data: IData[] }> => {
       return {
         ...year,
         key: "year_" + year.date,
+        expandable: true,
         children:
           year.date === lastYearNumber
             ? kvartalsLastYear.map((kvartal) => ({

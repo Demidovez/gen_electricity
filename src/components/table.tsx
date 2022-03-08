@@ -1,12 +1,13 @@
-import { Input, InputNumber, Popconfirm, Table, Typography } from "antd";
+import { Popconfirm, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { ColumnTypes, EditableCellProps, IData } from "../types/types";
+import { ColumnTypes, IData } from "../types/types";
 import Loading from "./loading";
 import React from "react";
 import { updateDayAction } from "../redux/actions/creators/yearsActionCreators";
 import EditableCell from "./editable_cell";
+import AddDataLine from "./add_data_line";
 
 const TableData = () => {
   const dispatch = useAppDispatch();
@@ -18,10 +19,30 @@ const TableData = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState<IData[]>([]);
   const [editingKey, setEditingKey] = useState("");
+  const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<
+    string[]
+  >([]);
 
   useEffect(() => {
     setData(years);
   }, [years]);
+
+  useEffect(() => {
+    if (years.length > 0 && defaultExpandedRowKeys.length == 0) {
+      const lastYear = years[years.length - 1];
+      const lastKvartal = lastYear.children?.[lastYear.children?.length - 1];
+      const lastMonth =
+        lastKvartal?.children?.[lastKvartal?.children?.length - 1];
+
+      console.log([lastYear.key, lastKvartal?.key || "", lastMonth?.key || ""]);
+
+      setDefaultExpandedRowKeys([
+        lastYear.key,
+        lastKvartal?.key || "",
+        lastMonth?.key || "",
+      ]);
+    }
+  }, [years, defaultExpandedRowKeys]);
 
   const isEditing = (record: IData) => record.key === editingKey;
 
@@ -184,12 +205,6 @@ const TableData = () => {
         );
       },
     },
-    // render: () => (
-    //   <Button type="link" className="button_delete" size="small">
-    //     Удалить
-    //   </Button>
-    // ),
-    //},
   ];
 
   const mapColumnsOfTable = (col: any) => {
@@ -223,20 +238,28 @@ const TableData = () => {
         <Loading />
       ) : (
         <Form form={form} component={false}>
-          <Table
-            columns={columnsList as ColumnTypes}
-            rowClassName="editable-row"
-            components={{
-              body: {
-                cell: EditableCell,
-              },
-            }}
-            dataSource={data}
-            bordered
-            size="small"
-            pagination={false}
-            indentSize={0}
-          />
+          {defaultExpandedRowKeys.length > 0 && (
+            <Table
+              columns={columnsList as ColumnTypes}
+              rowClassName="editable-row"
+              components={{
+                body: {
+                  cell: EditableCell,
+                },
+              }}
+              dataSource={data}
+              bordered
+              size="small"
+              pagination={false}
+              indentSize={0}
+              expandable={{
+                expandRowByClick: true,
+                expandIcon: () => <></>,
+                defaultExpandedRowKeys: defaultExpandedRowKeys,
+              }}
+              summary={() => <AddDataLine />}
+            />
+          )}
         </Form>
       )}
     </div>

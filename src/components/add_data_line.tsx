@@ -1,113 +1,45 @@
+import { DatePicker, InputNumber, Table } from "antd";
+
 const AddDataLine = () => {
+  const onChange = () => {};
+
   return (
-    <>
-      <tr>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="date"
-            // value=""
-            data-val="true"
-            data-val-required="The Date field is required."
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-            readOnly
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="text"
-            // value=""
-          />
-        </td>
-        <td>
-          <input
-            className="form-control form-control-sm"
-            type="number"
-            // value=""
-            min="0"
-            step="0.01"
-          />
-        </td>
-      </tr>
-      <tr className="button_add_line">
-        <td colSpan={9} className="th_hide"></td>
-        <td colSpan={2} className="th_hide button_add">
-          <button>Добавить</button>
-        </td>
-      </tr>
-    </>
+    <Table.Summary.Row>
+      <Table.Summary.Cell index={0}>
+        <DatePicker onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={1}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={2}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={3}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={4}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={5}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={6}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={7}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={8}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={9}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={10}>
+        <InputNumber onChange={onChange} className="full_width" />
+      </Table.Summary.Cell>
+      <Table.Summary.Cell index={11}>Total</Table.Summary.Cell>
+    </Table.Summary.Row>
   );
 };
 

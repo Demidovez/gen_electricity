@@ -49,6 +49,7 @@ export const getKvartals = (days: IData[], year: number): IData[] => {
           sold: day.sold,
           RUP_consumed: day.RUP_consumed,
           gkal: day.gkal,
+          expandable: false,
           children: [],
         });
       }
