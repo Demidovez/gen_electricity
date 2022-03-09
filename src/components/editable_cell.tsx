@@ -11,7 +11,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  const inputNode =
+    inputType === "number" ? (
+      <InputNumber size="middle" />
+    ) : (
+      <Input size="middle" />
+    );
 
   return (
     <td {...restProps}>

@@ -36,7 +36,7 @@ export const getMonths = (days: IData[], year: number): IData[] => {
         });
       } else {
         months.push({
-          key: `month_${monthId}_${year}`,
+          key: `month_${monthId}`,
           date: monthId.toString(),
           year: year,
           production: day.production,

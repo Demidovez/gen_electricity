@@ -1,4 +1,4 @@
-import { Popconfirm, Table, Typography } from "antd";
+import { Popconfirm, Space, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
@@ -8,6 +8,13 @@ import React from "react";
 import { updateDayAction } from "../redux/actions/creators/yearsActionCreators";
 import EditableCell from "./editable_cell";
 import AddDataLine from "./add_data_line";
+import {
+  CloseCircleOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SaveOutlined,
+} from "@ant-design/icons";
 
 const TableData = () => {
   const dispatch = useAppDispatch();
@@ -19,30 +26,28 @@ const TableData = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState<IData[]>([]);
   const [editingKey, setEditingKey] = useState("");
-  const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<
-    string[]
-  >([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
   useEffect(() => {
     setData(years);
   }, [years]);
 
   useEffect(() => {
-    if (years.length > 0 && defaultExpandedRowKeys.length == 0) {
+    if (years.length > 0) {
       const lastYear = years[years.length - 1];
       const lastKvartal = lastYear.children?.[lastYear.children?.length - 1];
       const lastMonth =
         lastKvartal?.children?.[lastKvartal?.children?.length - 1];
 
-      console.log([lastYear.key, lastKvartal?.key || "", lastMonth?.key || ""]);
+      // console.log([lastYear.key, lastKvartal?.key || "", lastMonth?.key || ""]);
 
-      setDefaultExpandedRowKeys([
+      setExpandedRowKeys([
         lastYear.key,
         lastKvartal?.key || "",
         lastMonth?.key || "",
       ]);
     }
-  }, [years, defaultExpandedRowKeys]);
+  }, [years]);
 
   const isEditing = (record: IData) => record.key === editingKey;
 
@@ -177,31 +182,63 @@ const TableData = () => {
       title: "",
       dataIndex: "operation",
       key: "operation",
-      colSpan: 0,
+      // colSpan: 0,
       editable: false,
       align: "left" as "left",
       render: (_: any, record: IData) => {
         const editable = isEditing(record);
 
+        if (!record.key.includes("day_")) return null;
+
         return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{ marginRight: 8 }}
-            >
-              Save
+          <Space size="small">
+            <Typography.Link onClick={() => save(record.key)}>
+              <SaveOutlined
+                style={{ fontSize: "20px", verticalAlign: "middle" }}
+              />
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+            <Popconfirm
+              title="Вы уверены?"
+              onConfirm={cancel}
+              okText="Да"
+              cancelText="Отмена"
+            >
+              <a>
+                <CloseCircleOutlined
+                  style={{
+                    fontSize: "20px",
+                    color: "#eb2f96",
+                    verticalAlign: "middle",
+                  }}
+                />
+              </a>
             </Popconfirm>
-          </span>
+          </Space>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
-            Edit
-          </Typography.Link>
+          editingKey === "" && (
+            <Space size="small">
+              <Typography.Link onClick={() => edit(record)}>
+                <EditOutlined
+                  style={{ fontSize: "20px", verticalAlign: "middle" }}
+                />
+              </Typography.Link>
+
+              <Popconfirm
+                title="Вы уверены?"
+                onConfirm={cancel}
+                okText="Да"
+                cancelText="Отмена"
+              >
+                <DeleteOutlined
+                  style={{
+                    fontSize: "20px",
+                    color: "#eb2f96",
+                    verticalAlign: "middle",
+                  }}
+                />
+              </Popconfirm>
+            </Space>
+          )
         );
       },
     },
@@ -232,34 +269,44 @@ const TableData = () => {
 
   const columnsList = columns.map(mapColumnsOfTable);
 
+  const onTableRowExpand = (expanded: boolean, record: IData) => {
+    if (expanded) {
+      setExpandedRowKeys([...expandedRowKeys, record.key]);
+    } else {
+      console.log(record.key);
+      setExpandedRowKeys(
+        expandedRowKeys.filter((key) => key.indexOf(record.key) === -1)
+      );
+    }
+  };
+
   return (
     <div className="table_days">
       {isLoadingYears ? (
         <Loading />
       ) : (
         <Form form={form} component={false}>
-          {defaultExpandedRowKeys.length > 0 && (
-            <Table
-              columns={columnsList as ColumnTypes}
-              rowClassName="editable-row"
-              components={{
-                body: {
-                  cell: EditableCell,
-                },
-              }}
-              dataSource={data}
-              bordered
-              size="small"
-              pagination={false}
-              indentSize={0}
-              expandable={{
-                expandRowByClick: true,
-                expandIcon: () => <></>,
-                defaultExpandedRowKeys: defaultExpandedRowKeys,
-              }}
-              summary={() => <AddDataLine />}
-            />
-          )}
+          <Table
+            columns={columnsList}
+            rowClassName="editable-row"
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+            dataSource={data}
+            bordered
+            size="small"
+            pagination={false}
+            indentSize={0}
+            expandable={{
+              expandRowByClick: true,
+              expandIcon: () => <></>,
+              expandedRowKeys: expandedRowKeys,
+            }}
+            summary={() => <AddDataLine />}
+            onExpand={onTableRowExpand}
+          />
         </Form>
       )}
     </div>

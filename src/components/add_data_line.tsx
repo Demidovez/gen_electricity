@@ -1,4 +1,5 @@
-import { DatePicker, InputNumber, Table } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, DatePicker, InputNumber, Table } from "antd";
 
 const AddDataLine = () => {
   const onChange = () => {};
@@ -38,7 +39,11 @@ const AddDataLine = () => {
       <Table.Summary.Cell index={10}>
         <InputNumber onChange={onChange} className="full_width" />
       </Table.Summary.Cell>
-      <Table.Summary.Cell index={11}>Total</Table.Summary.Cell>
+      <Table.Summary.Cell index={11}>
+        <Button type="primary">
+          <PlusOutlined />
+        </Button>
+      </Table.Summary.Cell>
     </Table.Summary.Row>
   );
 };

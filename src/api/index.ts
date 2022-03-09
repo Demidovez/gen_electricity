@@ -32,6 +32,7 @@ export const fetchYears = async (): Promise<{ data: IData[] }> => {
           year.date === lastYearNumber
             ? kvartalsLastYear.map((kvartal) => ({
                 ...kvartal,
+                key: `year_${year.date}.${kvartal.key}`,
                 children: monthsLastYear
                   .filter(
                     (month) =>
@@ -41,6 +42,7 @@ export const fetchYears = async (): Promise<{ data: IData[] }> => {
                   .map((month) => {
                     return {
                       ...month,
+                      key: `year_${year.date}.${kvartal.key}.${month.key}`,
                       children:
                         month.date === lastMonth.date &&
                         month.year === lastMonth.year

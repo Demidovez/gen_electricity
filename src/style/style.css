@@ -27,11 +27,11 @@
   background-color: #b8daff;
 }
 
-.table_days tr[data-row-key^="kvartal_"] {
+.table_days tr[data-row-key*=".kvartal_"] {
   background-color: #c3e6cb;
 }
 
-.table_days tr[data-row-key^="month_"] {
+.table_days tr[data-row-key*=".month_"] {
   background-color: #d6d8db;
 }
 
@@ -56,11 +56,11 @@
   background-color: #9dc0e5 !important;
 }
 
-.table_days tr[data-row-key^="kvartal_"]:hover td {
+.table_days tr[data-row-key*=".kvartal_"]:hover td {
   background-color: #add1b5 !important;
 }
 
-.table_days tr[data-row-key^="month_"]:hover td {
+.table_days tr[data-row-key*=".month_"]:hover td {
   background-color: #c5c6c7 !important;
 }
 

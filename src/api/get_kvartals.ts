@@ -38,7 +38,7 @@ export const getKvartals = (days: IData[], year: number): IData[] => {
         });
       } else {
         kvartals.push({
-          key: `kvartal_${getKvartalNumber(month)}_${year}`,
+          key: `kvartal_${getKvartalNumber(month)}`,
           date: getKvartalNumber(month).toString(),
           year: year,
           production: day.production,
