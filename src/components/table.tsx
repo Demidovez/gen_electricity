@@ -5,7 +5,10 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { ColumnTypes, IData } from "../types/types";
 import Loading from "./loading";
 import React from "react";
-import { updateDayAction } from "../redux/actions/creators/yearsActionCreators";
+import {
+  fetchYearAction,
+  updateDayAction,
+} from "../redux/actions/creators/yearsActionCreators";
 import EditableCell from "./editable_cell";
 import AddDataLine from "./add_data_line";
 import {
@@ -38,8 +41,6 @@ const TableData = () => {
       const lastKvartal = lastYear.children?.[lastYear.children?.length - 1];
       const lastMonth =
         lastKvartal?.children?.[lastKvartal?.children?.length - 1];
-
-      // console.log([lastYear.key, lastKvartal?.key || "", lastMonth?.key || ""]);
 
       setExpandedRowKeys([
         lastYear.key,
@@ -272,8 +273,12 @@ const TableData = () => {
   const onTableRowExpand = (expanded: boolean, record: IData) => {
     if (expanded) {
       setExpandedRowKeys([...expandedRowKeys, record.key]);
+
+      if (record.children?.length === 0) {
+        // dispatch(fetchDataAction(record.))
+        console.log(record);
+      }
     } else {
-      console.log(record.key);
       setExpandedRowKeys(
         expandedRowKeys.filter((key) => key.indexOf(record.key) === -1)
       );
