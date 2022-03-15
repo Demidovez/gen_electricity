@@ -208,7 +208,7 @@ const TableData = () => {
                 <CloseCircleOutlined
                   style={{
                     fontSize: "20px",
-                    color: "#eb2f96",
+                    color: "#c0392b",
                     verticalAlign: "middle",
                   }}
                 />
@@ -220,7 +220,11 @@ const TableData = () => {
             <Space size="small">
               <Typography.Link onClick={() => edit(record)}>
                 <EditOutlined
-                  style={{ fontSize: "20px", verticalAlign: "middle" }}
+                  style={{
+                    fontSize: "20px",
+                    verticalAlign: "middle",
+                    color: "#343a40",
+                  }}
                 />
               </Typography.Link>
 
@@ -233,7 +237,7 @@ const TableData = () => {
                 <DeleteOutlined
                   style={{
                     fontSize: "20px",
-                    color: "#eb2f96",
+                    color: "#c0392b",
                     verticalAlign: "middle",
                   }}
                 />
