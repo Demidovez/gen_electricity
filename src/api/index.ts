@@ -1,99 +1,43 @@
-import { IData } from "../types/types";
-import { getKvartalNumber } from "../utils/utils";
-import { getDays } from "./get_days";
-import { getKvartals } from "./get_kvartals";
-import { getMonths } from "./get_months";
+import { IDay, IYear } from "../types/types";
+
 import axios from "axios";
-import { fetchData } from "./fetch_data";
 
-export const fetchYears = async (): Promise<{ data: IData[] }> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export const fetchYears = async (): Promise<IYear[]> => {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const [years, days] = await fetchData();
+  return axios
+    .get("http://localhost:9082/get_years")
+    .then(({ data }) => data as IYear[])
+    .catch((err) => {
+      console.log(err);
 
-  const lastYearNumber = years[years.length - 1].date;
-
-  const kvartalsLastYear = getKvartals(days, parseInt(lastYearNumber));
-  const monthsLastYear = getMonths(days, parseInt(lastYearNumber)).sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
-
-  const lastMonth = monthsLastYear[monthsLastYear.length - 1];
-
-  const daysLastMonth = getDays(days, lastMonth);
-
-  return {
-    data: years.map((year) => {
-      return {
-        ...year,
-        key: "year_" + year.date,
-        children:
-          year.date === lastYearNumber
-            ? kvartalsLastYear.map((kvartal) => ({
-                ...kvartal,
-                key: `year_${year.date}.${kvartal.key}`,
-                children: monthsLastYear
-                  .filter(
-                    (month) =>
-                      kvartal.date ===
-                      getKvartalNumber(parseInt(month.date)).toString()
-                  )
-                  .map((month) => {
-                    return {
-                      ...month,
-                      key: `year_${year.date}.${kvartal.key}.${month.key}`,
-                      children:
-                        month.date === lastMonth.date &&
-                        month.year === lastMonth.year
-                          ? daysLastMonth
-                          : [],
-                    };
-                  }),
-              }))
-            : [],
-      };
-    }),
-  };
+      return [];
+    });
 };
 
-export const fetchYear = async (
-  date: number
-): Promise<{ data: IData | undefined }> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export const fetchDays = async (year: number = 0): Promise<IYear[]> => {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const [years, days] = await fetchData();
+  return axios
+    .get("http://localhost:9082/get_days/" + year)
+    .then(({ data }) => data)
+    .catch((err) => {
+      console.log(err);
 
-  const findYear = years.find(
-    (yearFromList) => yearFromList.date === date.toString()
-  );
-
-  if (findYear) {
-    const kvartals = getKvartals(days, parseInt(findYear.date));
-    const months = getMonths(days, parseInt(findYear.date)).sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-
-    return {
-      data: {
-        ...findYear,
-        key: "year_" + findYear.date,
-        children: kvartals.map((kvartal) => ({
-          ...kvartal,
-          children: months.filter(
-            (month) =>
-              kvartal.date === getKvartalNumber(parseInt(month.date)).toString()
-          ),
-        })),
-      },
-    };
-  } else {
-    return { data: undefined };
-  }
+      return [];
+    });
 };
 
-export const updateDayData = (data: IData) => {
+export const updateDayData = (data: IDay) => {
   axios
-    .post("http://localhost:9081/update_day", { data })
+    .post("http://localhost:9082/update_day", { data })
     .then(() => console.log("UPDATED!"))
+    .catch((err) => console.log(err));
+};
+
+export const insertDayData = (data: IDay) => {
+  axios
+    .post("http://localhost:9082/insert_day", { data })
+    .then(() => console.log("INSERTED!"))
     .catch((err) => console.log(err));
 };

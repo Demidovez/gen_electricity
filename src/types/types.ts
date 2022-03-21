@@ -9,8 +9,8 @@ export interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
-  inputType: "number" | "text";
-  record: IData;
+  inputType: "number" | "date";
+  record: IDay;
   index: number;
   children: React.ReactNode;
 }
@@ -19,10 +19,8 @@ export type EditableTableProps = Parameters<typeof Table>[0];
 
 export type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
-export interface IData {
-  key: string;
+export interface IRawData {
   date: string;
-  year?: number;
   production: number;
   total_consumed: number;
   ZBC_consumed: number;
@@ -30,10 +28,37 @@ export interface IData {
   procentage: number;
   sold: number;
   RUP_consumed: number;
-  power?: number;
-  plus?: string;
+  power: number;
+  plus: boolean;
   gkal: number;
-  children?: IData[];
+}
+
+export interface ITableData extends Omit<IRawData, "date"> {
+  key: string;
+  shortdate: string;
+  children: ITableData[];
+}
+
+export interface IData extends ITableData {
+  date: string;
+  year: number;
+  index: number;
+}
+
+export interface IDay extends IData {
+  fulldate: string;
+}
+
+export interface IMonth extends IData {
+  month: number;
+}
+
+export interface IKvartal extends IData {
+  kvartal: number;
+}
+
+export interface IYear extends IData {
+  days?: IDay[];
 }
 
 export enum EStatus {
@@ -47,7 +72,7 @@ export const MONTHS = [
   "Январь",
   "Февраль",
   "Март",
-  "Апреля",
+  "Апрель",
   "Май",
   "Июнь",
   "Июль",

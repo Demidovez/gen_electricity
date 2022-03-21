@@ -80,3 +80,11 @@
 .full_width {
   width: 100%;
 }
+
+.ant-form-item-explain {
+  display: none;
+}
+
+.operation_column {
+  min-width: 65px;
+}

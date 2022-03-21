@@ -1,27 +1,38 @@
-import { IAction, IData } from "../../../types/types";
+import {
+  IAction,
+  ITableData,
+  IDay,
+  IYear,
+  IRawData,
+} from "../../../types/types";
 import Actions from "../types/yearsActionTypes";
-
-export const fetchYearAction = (data: number): IAction => ({
-  type: Actions.FETCH_YEAR,
-  payload: data,
-});
-
-export const setYearAction = (data: IData): IAction => ({
-  type: Actions.SET_YEAR,
-  payload: data,
-});
 
 export const fetchYearsAction = (): IAction => ({
   type: Actions.FETCH_YEARS,
   payload: null,
 });
 
-export const setYearsAction = (data: IData[]): IAction => ({
+export const setYearsAction = (data: IYear[]): IAction => ({
   type: Actions.SET_YEARS,
   payload: data,
 });
 
-export const updateDayAction = (data: IData): IAction => ({
+export const fetchDaysAction = (year?: number): IAction => ({
+  type: Actions.FETCH_DAYS,
+  payload: year,
+});
+
+export const setDaysAction = (data: IDay[]): IAction => ({
+  type: Actions.SET_DAYS,
+  payload: data,
+});
+
+export const updateDayAction = (data: ITableData): IAction => ({
   type: Actions.UPDATE_DAY,
+  payload: data,
+});
+
+export const insertDayAction = (data: IRawData): IAction => ({
+  type: Actions.INSERT_DAY,
   payload: data,
 });

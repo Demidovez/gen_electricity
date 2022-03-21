@@ -1,22 +1,22 @@
 import { put, call, takeEvery } from "redux-saga/effects";
 import Actions from "../redux/actions/types/yearsActionTypes";
-import { fetchYear, fetchYears, updateDayData } from "../api";
+import { fetchDays, fetchYears, insertDayData, updateDayData } from "../api";
 import {
-  setYearAction,
+  setDaysAction,
   setYearsAction,
 } from "../redux/actions/creators/yearsActionCreators";
-import { IAction } from "../types/types";
+import { IAction, IDay, IYear } from "../types/types";
 
 function* workerFetchYears(action: IAction) {
-  const { data } = yield call(fetchYears);
+  const data: IYear[] = yield call(fetchYears);
 
   yield put(setYearsAction(data));
 }
 
-function* workerFetchYear(action: IAction) {
-  const { data } = yield call(fetchYear, action.payload);
+function* workerFetchDays(action: IAction) {
+  const data: IDay[] = yield call(fetchDays, action.payload);
 
-  yield put(setYearAction(data));
+  yield put(setDaysAction(data));
 }
 
 function* workerUpdateDay(action: IAction) {
@@ -25,8 +25,15 @@ function* workerUpdateDay(action: IAction) {
   // yield put(setYearAction(data));
 }
 
+function* workerInsertDay(action: IAction) {
+  yield call(insertDayData, action.payload);
+
+  // yield put(setYearAction(data));
+}
+
 export default function* watcherSaga() {
   yield takeEvery(Actions.FETCH_YEARS, workerFetchYears);
-  yield takeEvery(Actions.FETCH_YEAR, workerFetchYear);
+  yield takeEvery(Actions.FETCH_DAYS, workerFetchDays);
   yield takeEvery(Actions.UPDATE_DAY, workerUpdateDay);
+  yield takeEvery(Actions.INSERT_DAY, workerInsertDay);
 }

@@ -5,16 +5,22 @@ import Login from "./components/login";
 import SaveToExcel from "./components/savetoexcel";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { useEffect } from "react";
-import { fetchYearsAction } from "./redux/actions/creators/yearsActionCreators";
+import {
+  fetchDaysAction,
+  fetchYearsAction,
+} from "./redux/actions/creators/yearsActionCreators";
 import { Col, Row } from "antd";
 
 const App = () => {
   const dispatch = useAppDispatch();
 
-  const isLoadingYears = useAppSelector((state) => state.years.isLoadingYears);
+  const isLoadingYears = useAppSelector(
+    (state) => state.years.isLoadingYearsRaw
+  );
 
   useEffect(() => {
     dispatch(fetchYearsAction());
+    dispatch(fetchDaysAction());
   }, [dispatch]);
 
   return (

@@ -1,5 +1,6 @@
-import { Form, Input, InputNumber } from "antd";
+import { DatePicker, Form, Input, InputNumber } from "antd";
 import { EditableCellProps } from "../types/types";
+import InputDate from "./input_date";
 
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
@@ -12,10 +13,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const inputNode =
-    inputType === "number" ? (
-      <InputNumber size="middle" />
+    inputType === "date" ? (
+      <InputDate style={{ width: "100%" }} date={record.date} />
     ) : (
-      <Input size="middle" />
+      <InputNumber size="middle" style={{ width: "100%" }} />
     );
 
   return (
