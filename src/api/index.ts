@@ -41,3 +41,10 @@ export const insertDayData = (data: IDay) => {
     .then(() => console.log("INSERTED!"))
     .catch((err) => console.log(err));
 };
+
+export const deleteDayData = (data: string) => {
+  axios
+    .post("http://localhost:9082/delete_day", { data })
+    .then(() => console.log("DELETED!"))
+    .catch((err) => console.log(err));
+};

@@ -5,16 +5,12 @@ interface IDaysState {
   yearsRaw: IYear[];
   daysRaw: IDay[];
   isLoadingYearsRaw: boolean;
-  isLoadingDaysRaw: boolean;
-  isLoadingYear: boolean;
 }
 
 const initialState: IDaysState = {
   yearsRaw: [],
   daysRaw: [],
   isLoadingYearsRaw: false,
-  isLoadingDaysRaw: false,
-  isLoadingYear: false,
 };
 
 const dataReducer = (state = initialState, action: IAction): IDaysState => {
@@ -30,15 +26,9 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
         isLoadingYearsRaw: false,
         yearsRaw: action.payload,
       };
-    case Actions.FETCH_DAYS:
-      return {
-        ...state,
-        isLoadingDaysRaw: true,
-      };
     case Actions.SET_DAYS:
       return {
         ...state,
-        isLoadingDaysRaw: false,
         // Добавляем новые дни, с проверкой что их не было в старом списке
         daysRaw: [
           ...state.daysRaw,

@@ -5,6 +5,7 @@ const Actions = {
   SET_DAYS: "YEARS/SET_DAYS",
   UPDATE_DAY: "YEARS/UPDATE_DAY",
   INSERT_DAY: "YEARS/INSERT_DAY",
+  DELETE_DAY: "YEARS/DELETE_DAY",
 };
 
 export default Actions;

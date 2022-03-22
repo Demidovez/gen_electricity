@@ -1,6 +1,5 @@
-import { Popconfirm, Space, Table, Typography } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Form } from "antd";
+import { Form, Table } from "antd";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import {
   ITableData,
@@ -15,17 +14,13 @@ import Loading from "./loading";
 import React from "react";
 import EditableCell from "./editable_cell";
 import AddDataLine from "./add_data_line";
-import {
-  CloseCircleOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  SaveOutlined,
-} from "@ant-design/icons";
 import { getKvartalNumber } from "../utils/utils";
 import {
+  deleteDayAction,
   fetchDaysAction,
   updateDayAction,
 } from "../redux/actions/creators/yearsActionCreators";
+import EditableButtons from "./editable_buttons";
 
 const TableData = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +39,7 @@ const TableData = () => {
   const [editingKey, setEditingKey] = useState("");
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
+  // Определяем какие строки должны быть открыты (последний год, последний квартал, последний месяц)
   useEffect(() => {
     if (years.length > 0 && !initExpanded) {
       const lastYear = years[years.length - 1];
@@ -60,8 +56,10 @@ const TableData = () => {
     }
   }, [years, initExpanded]);
 
+  // Обновляем список дней
   useEffect(() => setDays(daysRaw), [daysRaw]);
 
+  // Обновляем список месяцев
   useEffect(() => {
     if (days.length > 0) {
       let monthsList: IMonth[] = [];
@@ -74,6 +72,7 @@ const TableData = () => {
           (item) => item.month === month && item.year === year
         );
 
+        // Если месяц уже есть до добавляем к нему данные за день
         if (monthIndex > -1) {
           const monthFound = monthsList[monthIndex];
 
@@ -91,6 +90,7 @@ const TableData = () => {
             children: [...monthFound.children, day],
           };
         } else {
+          // Если нету - добавляем первый день
           monthsList.push({
             key: `year_${year}.kvartal_${getKvartalNumber(
               month
@@ -119,6 +119,7 @@ const TableData = () => {
     }
   }, [days]);
 
+  // Обновляем список кварталов
   useEffect(() => {
     if (months.length > 0) {
       let kvartalsList: IKvartal[] = [];
@@ -130,6 +131,7 @@ const TableData = () => {
           (item) => item.year === month.year && item.kvartal === kvartal
         );
 
+        // Если квартал уже есть до добавляем к нему данные за месяц
         if (kvartalIndex > -1) {
           const kvartalFound = kvartalsList[kvartalIndex];
 
@@ -147,6 +149,7 @@ const TableData = () => {
             children: [...kvartalFound.children, month],
           };
         } else {
+          // Если нету - добавляем первый месяц
           kvartalsList.push({
             key: `year_${month.year}.kvartal_${kvartal}`,
             kvartal: kvartal,
@@ -173,6 +176,7 @@ const TableData = () => {
     }
   }, [months]);
 
+  // Обновляем список лет
   useEffect(() => {
     if (kvartals.length > 0 && yearsRaw.length > 0) {
       let yearsList: IYear[] = [];
@@ -182,6 +186,7 @@ const TableData = () => {
           (item) => item.year === kvartal.year
         );
 
+        // Если год уже есть до добавляем к нему данные за квартал
         if (yearIndex > -1) {
           const yearFound = yearsList[yearIndex];
 
@@ -199,6 +204,7 @@ const TableData = () => {
             children: [...yearFound.children, kvartal],
           };
         } else {
+          // Если нету - добавляем первый квартал
           yearsList.push({
             key: `year_${kvartal.year}`,
             year: kvartal.year,
@@ -220,6 +226,7 @@ const TableData = () => {
         }
       });
 
+      // Добавляем к списку оставшиеся загружанные года
       yearsRaw.forEach((yearRaw) => {
         if (!yearsList.some((year) => year.year === yearRaw.year)) {
           yearsList.push({
@@ -241,11 +248,13 @@ const TableData = () => {
     }
   }, [kvartals, yearsRaw]);
 
+  // Определяем статус строки как редактируемой
   const isEditing = useCallback(
     (record: ITableData) => record.key === editingKey,
     [editingKey]
   );
 
+  // Устанавливаем статус строки как редактируемой
   const edit = useCallback(
     (record: Partial<ITableData> & { key: React.Key }) => {
       form.setFieldsValue({ ...record });
@@ -254,8 +263,10 @@ const TableData = () => {
     [form]
   );
 
+  // Отмена редактирования
   const cancel = useCallback(() => setEditingKey(""), []);
 
+  // Обновляем данные после редактирования
   const updateData = useCallback(
     (day: IDay, indexDay: number) => {
       const year = new Date(day.date).getFullYear();
@@ -277,6 +288,7 @@ const TableData = () => {
       );
       const oldYear = newYears.find((oldYear) => oldYear.year === year);
 
+      // От найденного месяца отнимаем старый день и добавляем новый
       if (oldMonth && oldKvartal && oldYear) {
         const newMonth = {
           ...oldMonth,
@@ -304,6 +316,7 @@ const TableData = () => {
           }),
         };
 
+        // От найденного квартала отнимаем старый месяц и добавляем новый
         const newKvartal = {
           ...oldKvartal,
           production:
@@ -336,6 +349,7 @@ const TableData = () => {
           }),
         };
 
+        // От найденного года отнимаем старый квартал и добавляем новый
         const newYear = {
           ...oldYear,
           production:
@@ -373,6 +387,7 @@ const TableData = () => {
         newYears.splice(oldYear.index, 1, newYear);
       }
 
+      // Заменяем старый день на новый
       newDays.splice(indexDay, 1, {
         ...oldDay,
         ...day,
@@ -386,13 +401,7 @@ const TableData = () => {
     [days, months, kvartals, years]
   );
 
-  const addData = useCallback(
-    (day: IDay) => {
-      setDays([...days, day]);
-    },
-    [days]
-  );
-
+  // Проверяем данные и запускаем обновление данных
   const save = useCallback(
     async (key: React.Key) => {
       try {
@@ -409,16 +418,27 @@ const TableData = () => {
         if (index > -1) {
           updateData(newDay, index);
           dispatch(updateDayAction(newDay));
-        } else {
-          addData(newDay);
         }
       } catch (errInfo) {
         console.log("Validate Failed:", errInfo);
       }
     },
-    [form, days, updateData, addData]
+    [form, days, updateData]
   );
 
+  // Удаляем день по его ключу
+  const remove = useCallback(
+    (key: React.Key) => {
+      const date = days.find((day) => day.key === key)?.date;
+
+      date && dispatch(deleteDayAction(date));
+
+      setDays(days.filter((day) => day.key !== key));
+    },
+    [days]
+  );
+
+  // Конфигурация колонок
   const columns = useMemo(
     () => [
       {
@@ -426,7 +446,7 @@ const TableData = () => {
         dataIndex: "shortdate",
         key: "date",
         width: "12%",
-        editable: true,
+        editable: false,
       },
       {
         title: "Выработка целлюлозы, тонн.",
@@ -518,73 +538,29 @@ const TableData = () => {
         key: "operation",
         className: "operation_column",
         editable: false,
+        // Определяем управление (кнопки) строкой данных
         render: (_: any, record: ITableData) => {
           const editable = isEditing(record);
 
           if (!record.key.includes("day_")) return null;
 
           return (
-            <div>
-              {editable ? (
-                <Space size="small">
-                  <Typography.Link onClick={() => save(record.key)}>
-                    <SaveOutlined
-                      style={{ fontSize: "20px", verticalAlign: "middle" }}
-                    />
-                  </Typography.Link>
-                  <Popconfirm
-                    title="Вы уверены?"
-                    onConfirm={cancel}
-                    okText="Да"
-                    cancelText="Отмена"
-                  >
-                    <CloseCircleOutlined
-                      style={{
-                        fontSize: "20px",
-                        color: "#c0392b",
-                        verticalAlign: "middle",
-                      }}
-                    />
-                  </Popconfirm>
-                </Space>
-              ) : (
-                editingKey === "" && (
-                  <Space size="small">
-                    <Typography.Link onClick={() => edit(record)}>
-                      <EditOutlined
-                        style={{
-                          fontSize: "20px",
-                          verticalAlign: "middle",
-                          color: "#343a40",
-                        }}
-                      />
-                    </Typography.Link>
-
-                    <Popconfirm
-                      title="Вы уверены?"
-                      onConfirm={cancel}
-                      okText="Да"
-                      cancelText="Отмена"
-                    >
-                      <DeleteOutlined
-                        style={{
-                          fontSize: "20px",
-                          color: "#c0392b",
-                          verticalAlign: "middle",
-                        }}
-                      />
-                    </Popconfirm>
-                  </Space>
-                )
-              )}
-            </div>
+            <EditableButtons
+              editable={editable}
+              onSave={() => save(record.key)}
+              onEdit={() => edit(record)}
+              onDelete={() => remove(record.key)}
+              onCancel={cancel}
+              editingKey={editingKey}
+            />
           );
         },
       },
     ],
-    [isEditing, save, cancel, editingKey, edit]
+    [isEditing, save, cancel, remove, edit, editingKey]
   );
 
+  // Функция перебора ячеек таблицы
   const mapColumnsOfTable = useCallback(
     (col: any) => {
       if (!col.editable) {
@@ -616,6 +592,7 @@ const TableData = () => {
     [columns, mapColumnsOfTable]
   );
 
+  // Обрабатываем разворачивание/сворачивание строк
   const onTableRowExpand = useCallback(
     (expanded: boolean, record: ITableData) => {
       if (expanded) {

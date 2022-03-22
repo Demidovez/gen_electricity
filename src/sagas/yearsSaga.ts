@@ -1,6 +1,12 @@
 import { put, call, takeEvery } from "redux-saga/effects";
 import Actions from "../redux/actions/types/yearsActionTypes";
-import { fetchDays, fetchYears, insertDayData, updateDayData } from "../api";
+import {
+  deleteDayData,
+  fetchDays,
+  fetchYears,
+  insertDayData,
+  updateDayData,
+} from "../api";
 import {
   setDaysAction,
   setYearsAction,
@@ -27,8 +33,10 @@ function* workerUpdateDay(action: IAction) {
 
 function* workerInsertDay(action: IAction) {
   yield call(insertDayData, action.payload);
+}
 
-  // yield put(setYearAction(data));
+function* workerDeleteDay(action: IAction) {
+  yield call(deleteDayData, action.payload);
 }
 
 export default function* watcherSaga() {
@@ -36,4 +44,5 @@ export default function* watcherSaga() {
   yield takeEvery(Actions.FETCH_DAYS, workerFetchDays);
   yield takeEvery(Actions.UPDATE_DAY, workerUpdateDay);
   yield takeEvery(Actions.INSERT_DAY, workerInsertDay);
+  yield takeEvery(Actions.DELETE_DAY, workerDeleteDay);
 }

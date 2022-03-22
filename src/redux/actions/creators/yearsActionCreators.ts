@@ -36,3 +36,8 @@ export const insertDayAction = (data: IRawData): IAction => ({
   type: Actions.INSERT_DAY,
   payload: data,
 });
+
+export const deleteDayAction = (data: string): IAction => ({
+  type: Actions.DELETE_DAY,
+  payload: data,
+});
