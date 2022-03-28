@@ -82,3 +82,17 @@ export const MONTHS = [
   "Ноябрь",
   "Декабрь",
 ];
+
+export enum RESULT {
+  ok,
+  error,
+  idle,
+}
+
+export interface IUser {
+  id: any;
+  login: string;
+  firstname: string;
+  lastname: string;
+  role: string;
+}

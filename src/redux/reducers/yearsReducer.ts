@@ -1,16 +1,20 @@
-import { IAction, IDay, IYear } from "../../types/types";
+import { IAction, IDay, IYear, RESULT } from "../../types/types";
 import Actions from "../actions/types/yearsActionTypes";
 
 interface IDaysState {
   yearsRaw: IYear[];
   daysRaw: IDay[];
   isLoadingYearsRaw: boolean;
+  isFetchingExcel: boolean;
+  resultExcel: RESULT;
 }
 
 const initialState: IDaysState = {
   yearsRaw: [],
   daysRaw: [],
   isLoadingYearsRaw: false,
+  isFetchingExcel: false,
+  resultExcel: RESULT.idle,
 };
 
 const dataReducer = (state = initialState, action: IAction): IDaysState => {
@@ -40,7 +44,7 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
             .map((day: IDay) => ({
               ...day,
               key: `day_${day.date}`,
-              shortdate: `c 1 по ${new Date(day.date).getDate()}`,
+              shortdate: `с 1 по ${new Date(day.date).getDate()}`,
             })),
         ],
       };
@@ -53,9 +57,21 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
           {
             ...action.payload,
             key: `day_${action.payload.date}`,
-            shortdate: `c 1 по ${new Date(action.payload.date).getDate()}`,
+            shortdate: `с 1 по ${new Date(action.payload.date).getDate()}`,
           },
         ],
+      };
+    case Actions.FECTH_EXCEL:
+      return {
+        ...state,
+        isFetchingExcel: true,
+        resultExcel: initialState.resultExcel,
+      };
+    case Actions.SET_RESULT_EXCEL:
+      return {
+        ...state,
+        isFetchingExcel: false,
+        resultExcel: action.payload,
       };
     default:
       return state;

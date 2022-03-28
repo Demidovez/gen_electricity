@@ -81,10 +81,25 @@
   width: 100%;
 }
 
-.ant-form-item-explain {
+.table_days .ant-form-item-explain {
   display: none;
 }
 
 .operation_column {
   min-width: 65px;
+}
+
+.login_form {
+  margin-top: 150px;
+}
+
+.login_form .ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login_form .login_submit {
+  /* float: right; */
+  /* width: 100%; */
 }

@@ -4,6 +4,7 @@ import {
   IDay,
   IYear,
   IRawData,
+  RESULT,
 } from "../../../types/types";
 import Actions from "../types/yearsActionTypes";
 
@@ -39,5 +40,15 @@ export const insertDayAction = (data: IRawData): IAction => ({
 
 export const deleteDayAction = (data: string): IAction => ({
   type: Actions.DELETE_DAY,
+  payload: data,
+});
+
+export const fetchExcelFileAction = (): IAction => ({
+  type: Actions.FECTH_EXCEL,
+  payload: null,
+});
+
+export const setResultExcelAction = (data: RESULT): IAction => ({
+  type: Actions.SET_RESULT_EXCEL,
   payload: data,
 });

@@ -1,15 +1,61 @@
-import { Button, Space } from "antd";
+import { Form, Input, Button, Checkbox } from "antd";
+import { useAppDispatch } from "../hooks/hooks";
+import { tryLoginAction } from "../redux/actions/creators/userActionCreators";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+
+    dispatch(
+      tryLoginAction({ login: values.username, password: values.password })
+    );
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
-    <div className="login-line">
-      <Space size="middle">
-        Здравствуйте, n.demidovec@sckk.by!
-        <Button size="large" danger>
-          Выйти
+    <Form
+      name="basic"
+      labelCol={{ span: 10 }}
+      wrapperCol={{ span: 4 }}
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+      className="login_form"
+    >
+      <Form.Item
+        label="Логин"
+        name="username"
+        rules={[{ required: true, message: "Пожалуйста, введите свой логин!" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Пароль"
+        name="password"
+        rules={[
+          { required: true, message: "Пожалуйста, введите свой пароль!" },
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item wrapperCol={{ offset: 10, span: 4 }}>
+        <Form.Item name="remember" valuePropName="checked" noStyle>
+          <Checkbox>Запомнить меня</Checkbox>
+        </Form.Item>
+
+        <Button type="primary" htmlType="submit" className="login_submit">
+          Войти
         </Button>
-      </Space>
-    </div>
+      </Form.Item>
+    </Form>
   );
 };
 
