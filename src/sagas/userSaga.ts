@@ -14,7 +14,7 @@ function* workerTryLogin(action: IAction) {
   if (user) {
     yield put(setUserAction(user));
   } else {
-    yield put(setErrorLoginAction("Ошибка авторизации!"));
+    yield put(setErrorLoginAction());
   }
 }
 
@@ -31,6 +31,8 @@ function* workerGetUser() {
 
   if (user) {
     yield put(setUserAction(user));
+  } else {
+    yield put(setErrorLoginAction());
   }
 }
 

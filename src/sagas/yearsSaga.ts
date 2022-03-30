@@ -41,8 +41,8 @@ function* workerDeleteDay(action: IAction) {
   yield call(deleteDayData, action.payload);
 }
 
-function* workerFetchExcel() {
-  const { data } = yield call(fetchExcelData);
+function* workerFetchExcel(action: IAction) {
+  const { data } = yield call(fetchExcelData, action.payload);
 
   yield put(setResultExcelAction(data));
 }

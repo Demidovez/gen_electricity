@@ -16,7 +16,7 @@ import { getLoginedUserAction } from "./redux/actions/creators/userActionCreator
 const App = () => {
   const dispatch = useAppDispatch();
 
-  const { isLogined } = useAppSelector((state) => state.user);
+  const { isLogined, isUnknownUser } = useAppSelector((state) => state.user);
 
   const isLoadingYears = useAppSelector(
     (state) => state.years.isLoadingYearsRaw
@@ -46,7 +46,7 @@ const App = () => {
           <TableData />
         </>
       ) : (
-        <Login />
+        isUnknownUser && <Login />
       )}
     </div>
   );

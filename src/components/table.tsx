@@ -18,6 +18,8 @@ import { getKvartalNumber } from "../utils/utils";
 import {
   deleteDayAction,
   fetchDaysAction,
+  setExpandedRowAction,
+  setExpandedRowsAction,
   updateDayAction,
 } from "../redux/actions/creators/yearsActionCreators";
 import EditableButtons from "./editable_buttons";
@@ -25,33 +27,34 @@ import EditableButtons from "./editable_buttons";
 const TableData = () => {
   const dispatch = useAppDispatch();
 
-  const { yearsRaw, daysRaw, isLoadingYearsRaw } = useAppSelector(
+  const { yearsRaw, daysRaw, isLoadingYearsRaw, expandedRows } = useAppSelector(
     (state) => state.years
   );
 
   const [form] = Form.useForm();
-  const [years, setYears] = useState<IYear[]>([]);
+  const [years, setYears] = useState<IYear[] | null>(null);
   const [kvartals, setKvartals] = useState<IKvartal[]>([]);
   const [months, setMonths] = useState<IMonth[]>([]);
   const [days, setDays] = useState<IDay[]>([]);
 
   const [initExpanded, setInitExpanded] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
   // Определяем какие строки должны быть открыты (последний год, последний квартал, последний месяц)
   useEffect(() => {
-    if (years.length > 0 && !initExpanded) {
+    if (years && years.length > 0 && !initExpanded) {
       const lastYear = years[years.length - 1];
       const lastKvartal = lastYear.children?.[lastYear.children?.length - 1];
       const lastMonth =
         lastKvartal?.children?.[lastKvartal?.children?.length - 1];
 
-      setExpandedRowKeys([
-        lastYear.key,
-        lastKvartal?.key || "",
-        lastMonth?.key || "",
-      ]);
+      dispatch(
+        setExpandedRowsAction([
+          lastYear.key,
+          lastKvartal?.key || "",
+          lastMonth?.key || "",
+        ])
+      );
       setInitExpanded(true);
     }
   }, [years, initExpanded]);
@@ -276,7 +279,7 @@ const TableData = () => {
       const newDays = [...days];
       const newMonths = [...months];
       const newKvartals = [...kvartals];
-      const newYears = [...years];
+      const newYears = years ? [...years] : [];
 
       const oldDay = newDays[indexDay];
       const oldMonth = newMonths.find(
@@ -595,20 +598,14 @@ const TableData = () => {
   // Обрабатываем разворачивание/сворачивание строк
   const onTableRowExpand = useCallback(
     (expanded: boolean, record: ITableData) => {
-      if (expanded) {
-        setExpandedRowKeys([...expandedRowKeys, record.key]);
-      } else {
-        setExpandedRowKeys(
-          expandedRowKeys.filter((key) => key.indexOf(record.key) === -1)
-        );
-      }
+      dispatch(setExpandedRowAction(record.key));
 
-      const year = years.find((year) => year.year === (record as IData).year);
+      const year = years?.find((year) => year.year === (record as IData).year);
       if (year?.children.length === 0) {
         dispatch(fetchDaysAction((record as IData).year));
       }
     },
-    [expandedRowKeys, years, dispatch]
+    [expandedRows, years, dispatch]
   );
 
   const components = useMemo(
@@ -624,16 +621,16 @@ const TableData = () => {
     () => ({
       expandRowByClick: true,
       expandIcon: () => <></>,
-      expandedRowKeys: expandedRowKeys,
+      expandedRowKeys: expandedRows,
     }),
-    [expandedRowKeys]
+    [expandedRows]
   );
 
   const addline = useCallback(() => <AddDataLine />, []);
 
   return (
     <div className="table_days">
-      {isLoadingYearsRaw ? (
+      {isLoadingYearsRaw || !years ? (
         <Loading />
       ) : (
         <Form form={form} component={false}>

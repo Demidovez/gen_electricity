@@ -61,6 +61,24 @@ export interface IYear extends IData {
   days?: IDay[];
 }
 
+export enum EType {
+  year,
+  kvartal,
+  month,
+}
+
+export interface IExpanded {
+  value: number;
+  key: string;
+  type: EType;
+}
+
+export interface IExpandedRow {
+  year: IExpanded;
+  kvartals: IExpanded[];
+  months: IExpanded[];
+}
+
 export enum EStatus {
   LOADING,
   DONE,

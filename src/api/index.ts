@@ -1,7 +1,7 @@
 import { IDay, IUser, IYear } from "../types/types";
 
 import axios_base from "axios";
-import { getApiUrl } from "../helpers/helpers";
+import { getApiUrl } from "../utils/utils";
 
 const axios = axios_base.create({
   withCredentials: true,
@@ -55,9 +55,11 @@ export const deleteDayData = (data: string) => {
     .catch((err) => console.log(err));
 };
 
-export const fetchExcelData = async (): Promise<string> => {
+export const fetchExcelData = async (
+  expandedRows: string[]
+): Promise<string> => {
   try {
-    return await axios.get("gen_excel");
+    return await axios.post("gen_excel", { data: expandedRows });
   } catch (err) {
     console.log(err);
 
@@ -65,20 +67,24 @@ export const fetchExcelData = async (): Promise<string> => {
   }
 };
 
-export const getExcelDataLink = () => {
+export const getExcelDataLink = async () => {
   try {
-    const link = document.createElement("a");
-    link.href = "get_excel";
-    link.setAttribute(
-      "download",
-      `Выработка и потребление электроэнергии.xlsx`
-    );
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.parentNode?.removeChild(link);
+    await axios({
+      url: "get_excel",
+      method: "GET",
+      responseType: "blob",
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute(
+        "download",
+        "Выработка и потребление электроэнергии.xlsx"
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    });
   } catch (err) {
     console.log(err);
   }

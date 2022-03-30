@@ -43,12 +43,22 @@ export const deleteDayAction = (data: string): IAction => ({
   payload: data,
 });
 
-export const fetchExcelFileAction = (): IAction => ({
+export const fetchExcelFileAction = (data: string[]): IAction => ({
   type: Actions.FECTH_EXCEL,
-  payload: null,
+  payload: data,
 });
 
 export const setResultExcelAction = (data: RESULT): IAction => ({
   type: Actions.SET_RESULT_EXCEL,
+  payload: data,
+});
+
+export const setExpandedRowAction = (data: string): IAction => ({
+  type: Actions.SET_EXPANDED_ROW,
+  payload: data,
+});
+
+export const setExpandedRowsAction = (data: string[]): IAction => ({
+  type: Actions.SET_EXPANDED_ROWS,
   payload: data,
 });

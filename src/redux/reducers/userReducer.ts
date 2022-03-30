@@ -10,7 +10,7 @@ interface IState {
   lastname: string;
   role: string;
   config: any;
-  errorMessage: string;
+  isUnknownUser: boolean;
 }
 
 const initialState: IState = {
@@ -22,7 +22,7 @@ const initialState: IState = {
   lastname: "",
   role: "",
   config: null,
-  errorMessage: "",
+  isUnknownUser: false,
 };
 
 const dataReducer = (state = initialState, action: IAction): IState => {
@@ -30,7 +30,7 @@ const dataReducer = (state = initialState, action: IAction): IState => {
     case Actions.TRY_LOGIN:
       return {
         ...state,
-        errorMessage: "",
+        isUnknownUser: false,
         isTryingLogin: true,
       };
     case Actions.SET_USER:
@@ -44,6 +44,7 @@ const dataReducer = (state = initialState, action: IAction): IState => {
         role: action.payload.role,
         config: action.payload.config,
         isTryingLogin: false,
+        isUnknownUser: false,
       };
     case Actions.RESET_USER:
       return {
@@ -54,7 +55,7 @@ const dataReducer = (state = initialState, action: IAction): IState => {
         ...state,
         isLogined: false,
         isTryingLogin: false,
-        errorMessage: action.payload,
+        isUnknownUser: true,
       };
     default:
       return state;

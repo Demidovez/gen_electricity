@@ -1,4 +1,4 @@
-import { IAction, IDay, IYear, RESULT } from "../../types/types";
+import { IAction, IDay, IExpandedRow, IYear, RESULT } from "../../types/types";
 import Actions from "../actions/types/yearsActionTypes";
 
 interface IDaysState {
@@ -7,6 +7,7 @@ interface IDaysState {
   isLoadingYearsRaw: boolean;
   isFetchingExcel: boolean;
   resultExcel: RESULT;
+  expandedRows: string[];
 }
 
 const initialState: IDaysState = {
@@ -15,6 +16,7 @@ const initialState: IDaysState = {
   isLoadingYearsRaw: false,
   isFetchingExcel: false,
   resultExcel: RESULT.idle,
+  expandedRows: [],
 };
 
 const dataReducer = (state = initialState, action: IAction): IDaysState => {
@@ -72,6 +74,18 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
         ...state,
         isFetchingExcel: false,
         resultExcel: action.payload,
+      };
+    case Actions.SET_EXPANDED_ROW:
+      return {
+        ...state,
+        expandedRows: state.expandedRows.some((row) => row === action.payload)
+          ? state.expandedRows.filter((row) => !row.includes(action.payload))
+          : [...state.expandedRows, action.payload],
+      };
+    case Actions.SET_EXPANDED_ROWS:
+      return {
+        ...state,
+        expandedRows: action.payload,
       };
     default:
       return state;

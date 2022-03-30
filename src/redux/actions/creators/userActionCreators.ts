@@ -31,7 +31,7 @@ export const resetUserAction = (): IAction => ({
   payload: null,
 });
 
-export const setErrorLoginAction = (errorMessage: string): IAction => ({
+export const setErrorLoginAction = (): IAction => ({
   type: Actions.SET_ERROR_LOGIN,
-  payload: errorMessage,
+  payload: null,
 });
