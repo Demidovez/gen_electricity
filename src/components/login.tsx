@@ -6,8 +6,6 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   const onFinish = (values: any) => {
-    console.log("Success:", values);
-
     dispatch(
       tryLoginAction({ login: values.username, password: values.password })
     );
@@ -17,6 +15,7 @@ const Login = () => {
     console.log("Failed:", errorInfo);
   };
 
+  // TODO: Запомнить меня
   return (
     <Form
       name="basic"
