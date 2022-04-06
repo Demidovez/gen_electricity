@@ -1,8 +1,12 @@
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
 
 export interface IAction {
   type: string;
   payload: any | null;
+}
+
+export interface EditableRowProps {
+  index: number;
 }
 
 export interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -28,7 +32,7 @@ export interface IRawData {
   procentage: number;
   sold: number;
   RUP_consumed: number;
-  power: number;
+  power: number | null;
   plus: boolean;
   gkal: number;
 }
@@ -43,6 +47,11 @@ export interface IData extends ITableData {
   date: string;
   year: number;
   index: number;
+  onEdit?: (key: string) => {};
+  onCancel?: () => {};
+  onUpdate?: (key: string, data: IRawData) => {};
+  onRemove?: (key: string) => {};
+  onExpand?: (key: string, year: number) => {};
 }
 
 export interface IDay extends IData {
@@ -112,5 +121,14 @@ export interface IUser {
   login: string;
   firstname: string;
   lastname: string;
+  secondname: string;
   role: string;
 }
+
+export interface IInputData<T> {
+  value: T;
+  isError: boolean;
+}
+
+export type TypeTR = TableProps<IData> &
+  IData & { lineKey: string; isEditedKey: boolean };

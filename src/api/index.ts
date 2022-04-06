@@ -34,18 +34,22 @@ export const fetchDays = async (year: number = 0): Promise<IYear[]> => {
     });
 };
 
-export const updateDayData = (data: IDay) => {
-  axios
+export const updateDayData = async (data: IDay): Promise<string> => {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  return await axios
     .post("update_day", { data })
-    .then(() => console.log("UPDATED!"))
-    .catch((err) => console.log(err));
+    .then(({ data }) => data)
+    .catch((result) => result);
 };
 
-export const insertDayData = (data: IDay) => {
-  axios
+export const insertDayData = async (data: IDay): Promise<string> => {
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  return await axios
     .post("insert_day", { data })
-    .then(() => console.log("INSERTED!"))
-    .catch((err) => console.log(err));
+    .then(({ data }) => data)
+    .catch((result) => result);
 };
 
 export const deleteDayData = (data: string) => {

@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button } from "antd";
 import { useAppDispatch } from "../hooks/hooks";
 import { tryLoginAction } from "../redux/actions/creators/userActionCreators";
 
@@ -15,7 +15,6 @@ const Login = () => {
     console.log("Failed:", errorInfo);
   };
 
-  // TODO: Запомнить меня
   return (
     <Form
       name="basic"
@@ -46,11 +45,7 @@ const Login = () => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 10, span: 4 }}>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Запомнить меня</Checkbox>
-        </Form.Item>
-
-        <Button type="primary" htmlType="submit" className="login_submit">
+        <Button type="primary" htmlType="submit" className="login_submit" block>
           Войти
         </Button>
       </Form.Item>

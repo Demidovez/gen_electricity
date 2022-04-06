@@ -8,6 +8,7 @@ interface IState {
   login: string;
   firstname: string;
   lastname: string;
+  secondname: string;
   role: string;
   config: any;
   isUnknownUser: boolean;
@@ -20,6 +21,7 @@ const initialState: IState = {
   login: "",
   firstname: "",
   lastname: "",
+  secondname: "",
   role: "",
   config: null,
   isUnknownUser: false,
@@ -41,6 +43,7 @@ const dataReducer = (state = initialState, action: IAction): IState => {
         login: action.payload.login,
         firstname: action.payload.firstname,
         lastname: action.payload.lastname,
+        secondname: action.payload.secondname,
         role: action.payload.role,
         config: action.payload.config,
         isTryingLogin: false,

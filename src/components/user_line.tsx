@@ -5,7 +5,7 @@ import { tryLogoutAction } from "../redux/actions/creators/userActionCreators";
 const UserLine = () => {
   const dispatch = useAppDispatch();
 
-  const { firstname } = useAppSelector((state) => state.user);
+  const { firstname, secondname } = useAppSelector((state) => state.user);
 
   const logOut = () => {
     dispatch(tryLogoutAction());
@@ -15,7 +15,11 @@ const UserLine = () => {
     <div className="login-line">
       <Space size="middle">
         <div>
-          Здравствуйте, <b>{firstname}</b>!
+          Здравствуйте,{" "}
+          <b>
+            {firstname} {secondname}
+          </b>
+          !
         </div>
         <Button size="large" danger onClick={logOut}>
           Выйти

@@ -10,7 +10,10 @@ import {
 } from "../api";
 import {
   setDaysAction,
+  setEditiongAction,
   setResultExcelAction,
+  setResultInsertAction,
+  setResultUpdateAction,
   setYearsAction,
 } from "../redux/actions/creators/yearsActionCreators";
 import { IAction, IDay, IYear } from "../types/types";
@@ -28,13 +31,16 @@ function* workerFetchDays(action: IAction) {
 }
 
 function* workerUpdateDay(action: IAction) {
-  yield call(updateDayData, action.payload);
+  const result: string = yield call(updateDayData, action.payload);
 
-  // yield put(setYearAction(data));
+  yield put(setResultUpdateAction({ result }));
+  yield put(setEditiongAction(""));
 }
 
 function* workerInsertDay(action: IAction) {
-  yield call(insertDayData, action.payload);
+  const result: string = yield call(insertDayData, action.payload);
+
+  yield put(setResultInsertAction({ result, day: action.payload }));
 }
 
 function* workerDeleteDay(action: IAction) {
