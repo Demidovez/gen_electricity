@@ -47,11 +47,11 @@ export interface IData extends ITableData {
   date: string;
   year: number;
   index: number;
-  onEdit?: (key: string) => {};
+  onEdit?: () => {};
   onCancel?: () => {};
   onUpdate?: (key: string, data: IRawData) => {};
-  onRemove?: (key: string) => {};
-  onExpand?: (key: string, year: number) => {};
+  onRemove?: () => {};
+  onExpand?: () => {};
 }
 
 export interface IDay extends IData {
@@ -114,6 +114,7 @@ export enum RESULT {
   ok,
   error,
   idle,
+  loading,
 }
 
 export interface IUser {

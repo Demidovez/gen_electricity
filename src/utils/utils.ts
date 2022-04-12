@@ -12,7 +12,8 @@ export const getApiUrl = (): string => {
   if (process.env.NODE_ENV === "development") {
     api_url = "http://localhost:9082";
   } else {
-    api_url = "http://" + window.location.hostname + ":5107";
+    api_url = window.location.href + "api";
+    // api_url = "http://10.1.15.244:5107";
   }
 
   return api_url;

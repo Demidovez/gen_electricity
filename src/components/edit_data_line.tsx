@@ -4,15 +4,7 @@ import {
   PlusOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
-import {
-  Checkbox,
-  Input,
-  InputNumber,
-  message,
-  Popconfirm,
-  Space,
-  Typography,
-} from "antd";
+import { Checkbox, Input, message, Popconfirm, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../hooks/hooks";
 import { TypeTR } from "../types/types";
@@ -158,7 +150,7 @@ const EditDataLine = (props: TypeTR) => {
         />
       </td>
       <td>
-        {power && (
+        {power !== null && (
           <InputData
             onChange={handlePower}
             onError={onError}

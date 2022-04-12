@@ -6,8 +6,8 @@ interface IDaysState {
   daysRaw: IDay[];
   isLoadingYearsRaw: boolean;
   isFetchingExcel: boolean;
-  isAddingDay: boolean;
-  resultAdding: string;
+  resultAdding: RESULT;
+  errorAdding: string;
   isUpdatingDay: boolean;
   resultUpdating: string;
   editedKey: string;
@@ -20,8 +20,8 @@ const initialState: IDaysState = {
   daysRaw: [],
   isLoadingYearsRaw: false,
   isFetchingExcel: false,
-  isAddingDay: false,
-  resultAdding: "",
+  resultAdding: RESULT.idle,
+  errorAdding: "",
   isUpdatingDay: false,
   resultUpdating: "",
   editedKey: "",
@@ -60,11 +60,16 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
             })),
         ],
       };
+    case Actions.IDLE_INSERT_DAY:
+      return {
+        ...state,
+        resultAdding: RESULT.idle,
+      };
     case Actions.INSERTED_DAY:
       return {
         ...state,
-        isAddingDay: false,
-        resultAdding: action.payload.result,
+        resultAdding: action.payload.result ? RESULT.error : RESULT.ok,
+        errorAdding: action.payload.result,
         // Добавляем новый день
         daysRaw: action.payload.result
           ? state.daysRaw
@@ -82,8 +87,8 @@ const dataReducer = (state = initialState, action: IAction): IDaysState => {
     case Actions.INSERT_DAY:
       return {
         ...state,
-        isAddingDay: true,
-        resultAdding: "",
+        resultAdding: RESULT.loading,
+        errorAdding: "",
       };
     case Actions.UPDATE_DAY:
       return {

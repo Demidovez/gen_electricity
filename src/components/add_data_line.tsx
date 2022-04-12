@@ -15,11 +15,12 @@ import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { insertDayAction } from "../redux/actions/creators/yearsActionCreators";
 import InputData from "./input_data";
+import { RESULT } from "../types/types";
 
 const AddDataLine = () => {
   const dispatch = useAppDispatch();
 
-  const { isAddingDay, resultAdding } = useAppSelector((state) => state.years);
+  const { errorAdding, resultAdding } = useAppSelector((state) => state.years);
 
   const [isError, setIsError] = useState(false);
 
@@ -43,8 +44,22 @@ const AddDataLine = () => {
   }, [total_consumed, generation]);
 
   useEffect(() => {
-    resultAdding && message.error(resultAdding);
-  }, [resultAdding]);
+    if (resultAdding === RESULT.error) {
+      message.error(errorAdding);
+    } else if (resultAdding === RESULT.ok) {
+      setDate(new Date());
+      setProduction(0);
+      setTotalConsumed(0);
+      setZBCConsumed(0);
+      setGeneration(0);
+      setProcentage(0);
+      setSold(0);
+      setRUPConsumed(0);
+      setPower(0);
+      setPlus(false);
+      setGkal(0);
+    }
+  }, [resultAdding, errorAdding]);
 
   const onSubmit = () => {
     dispatch(
@@ -207,9 +222,13 @@ const AddDataLine = () => {
         <Button
           type="primary"
           onClick={onSubmit}
-          disabled={isError || isAddingDay}
+          disabled={isError || resultAdding === RESULT.loading}
         >
-          {isAddingDay ? <LoadingOutlined /> : <PlusOutlined />}
+          {resultAdding === RESULT.loading ? (
+            <LoadingOutlined />
+          ) : (
+            <PlusOutlined />
+          )}
         </Button>
       </Table.Summary.Cell>
     </Table.Summary.Row>

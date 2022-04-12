@@ -80,3 +80,8 @@ export const setResultUpdateAction = ({
   type: Actions.UPDATED_DAY,
   payload: { result },
 });
+
+export const setIdleInsertAction = (): IAction => ({
+  type: Actions.IDLE_INSERT_DAY,
+  payload: null,
+});

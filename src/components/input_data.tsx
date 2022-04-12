@@ -1,10 +1,5 @@
-import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { Input, InputNumber, Space, TableProps } from "antd";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useAppSelector } from "../hooks/hooks";
-import { IData, IInputData } from "../types/types";
-import EditDataLine from "./edit_data_line";
-import ReadDataLine from "./read_data_line";
+import { InputNumber } from "antd";
+import { useEffect, useState } from "react";
 
 interface IProps {
   onChange: (value: number) => void;
@@ -27,6 +22,10 @@ const InputData = ({
 }: IProps) => {
   const [isError, setIsError] = useState(false);
   const [value, setValue] = useState(data.toString());
+
+  useEffect(() => {
+    setValue(data.toString());
+  }, [data]);
 
   const isCorrect = (value: string): boolean => {
     if (min < 0 && value === "-") {

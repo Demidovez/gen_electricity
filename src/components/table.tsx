@@ -5,7 +5,7 @@ import { IDay, IKvartal, IMonth, IYear, MONTHS, IData } from "../types/types";
 import Loading from "./loading";
 import React from "react";
 import AddDataLine from "./add_data_line";
-import { getKvartalNumber } from "../utils/utils";
+import { getKvartalNumber, summa } from "../utils/utils";
 import {
   deleteDayAction,
   fetchDaysAction,
@@ -70,10 +70,13 @@ const TableData = () => {
 
           monthsList[monthIndex] = {
             ...monthFound,
-            production: monthFound.production + day.production,
-            total_consumed: monthFound.total_consumed + day.total_consumed,
-            ZBC_consumed: monthFound.ZBC_consumed + day.ZBC_consumed,
-            generation: monthFound.generation + day.generation,
+            production: summa(monthFound.production, day.production),
+            total_consumed: summa(
+              monthFound.total_consumed,
+              day.total_consumed
+            ),
+            ZBC_consumed: summa(monthFound.ZBC_consumed, day.ZBC_consumed),
+            generation: summa(monthFound.generation, day.generation),
             procentage: Number(
               Number(
                 ((monthFound.generation + day.generation) /
@@ -81,10 +84,10 @@ const TableData = () => {
                   100
               ).toFixed(2)
             ), //monthFound.procentage + day.procentage,
-            sold: monthFound.sold + day.sold,
-            RUP_consumed: monthFound.RUP_consumed + day.RUP_consumed,
+            sold: summa(monthFound.sold, day.sold),
+            RUP_consumed: summa(monthFound.RUP_consumed, day.RUP_consumed),
             power: null,
-            gkal: monthFound.gkal + day.gkal,
+            gkal: summa(monthFound.gkal, day.gkal),
             children: [...monthFound.children, day],
           };
         } else {
@@ -154,10 +157,13 @@ const TableData = () => {
 
           kvartalsList[kvartalIndex] = {
             ...kvartalFound,
-            production: kvartalFound.production + month.production,
-            total_consumed: kvartalFound.total_consumed + month.total_consumed,
-            ZBC_consumed: kvartalFound.ZBC_consumed + month.ZBC_consumed,
-            generation: kvartalFound.generation + month.generation,
+            production: summa(kvartalFound.production, month.production),
+            total_consumed: summa(
+              kvartalFound.total_consumed,
+              month.total_consumed
+            ),
+            ZBC_consumed: summa(kvartalFound.ZBC_consumed, month.ZBC_consumed),
+            generation: summa(kvartalFound.generation, month.generation),
             procentage: Number(
               Number(
                 ((kvartalFound.generation + month.generation) /
@@ -165,10 +171,10 @@ const TableData = () => {
                   100
               ).toFixed(2)
             ),
-            sold: kvartalFound.sold + month.sold,
-            RUP_consumed: kvartalFound.RUP_consumed + month.RUP_consumed,
+            sold: summa(kvartalFound.sold, month.sold),
+            RUP_consumed: summa(kvartalFound.RUP_consumed, month.RUP_consumed),
             power: null,
-            gkal: kvartalFound.gkal + month.gkal,
+            gkal: summa(kvartalFound.gkal, month.gkal),
             children: [...kvartalFound.children, month],
           };
         } else {
@@ -217,10 +223,13 @@ const TableData = () => {
 
           yearsList[yearIndex] = {
             ...yearFound,
-            production: yearFound.production + kvartal.production,
-            total_consumed: yearFound.total_consumed + kvartal.total_consumed,
-            ZBC_consumed: yearFound.ZBC_consumed + kvartal.ZBC_consumed,
-            generation: yearFound.generation + kvartal.generation,
+            production: summa(yearFound.production, kvartal.production),
+            total_consumed: summa(
+              yearFound.total_consumed,
+              kvartal.total_consumed
+            ),
+            ZBC_consumed: summa(yearFound.ZBC_consumed, kvartal.ZBC_consumed),
+            generation: summa(yearFound.generation, kvartal.generation),
             procentage: Number(
               Number(
                 ((yearFound.generation + kvartal.generation) /
@@ -228,10 +237,10 @@ const TableData = () => {
                   100
               ).toFixed(2)
             ),
-            sold: yearFound.sold + kvartal.sold,
-            RUP_consumed: yearFound.RUP_consumed + kvartal.RUP_consumed,
+            sold: summa(yearFound.sold, kvartal.sold),
+            RUP_consumed: summa(yearFound.RUP_consumed, kvartal.RUP_consumed),
             power: null,
-            gkal: yearFound.gkal + kvartal.gkal,
+            gkal: summa(yearFound.gkal, kvartal.gkal),
             children: [...yearFound.children, kvartal],
           };
         } else {
@@ -414,34 +423,59 @@ const TableData = () => {
 
   const addline = useCallback(() => <AddDataLine />, []);
 
-  const onEdit = (key: string) => dispatch(setEditiongAction(key));
+  const onEdit = useCallback(
+    (key: string) => dispatch(setEditiongAction(key)),
+    [dispatch]
+  );
 
-  const onCancel = () => dispatch(setEditiongAction(""));
+  const onCancel = useCallback(
+    () => dispatch(setEditiongAction("")),
+    [dispatch]
+  );
 
-  const onUpdate = (key: string, day: IData) => {
-    const newDays = days.map((item) => {
-      if (key === item.key) {
-        return {
-          ...item,
-          ...day,
-        };
-      } else {
-        return item;
-      }
-    });
+  const onUpdate = useCallback(
+    (key: string, day: IData) => {
+      const newDays = days.map((item) => {
+        if (key === item.key) {
+          return {
+            ...item,
+            ...day,
+          };
+        } else {
+          return item;
+        }
+      });
 
-    setDays(newDays);
+      setDays(newDays);
 
-    dispatch(updateDayAction(day));
-  };
+      dispatch(updateDayAction(day));
+    },
+    [days, dispatch]
+  );
 
-  const onRemove = (key: string) => {
-    const date = days.find((day) => day.key === key)?.date;
+  const onRemove = useCallback(
+    (key: string) => {
+      const date = days.find((day) => day.key === key)?.date;
 
-    date && dispatch(deleteDayAction(date));
+      date && dispatch(deleteDayAction(date));
 
-    setDays(days.filter((day) => day.key !== key));
-  };
+      setDays(days.filter((day) => day.key !== key));
+    },
+    [days]
+  );
+
+  const onRow = useCallback(
+    (record: IData) => ({
+      ...record,
+      isEditedKey: record.key === editedKey,
+      onEdit: () => onEdit(record.key),
+      onCancel,
+      onUpdate,
+      onRemove: () => onRemove(record.key),
+      onExpand: () => onExpand(record.key, record.year),
+    }),
+    [editedKey, onEdit, onCancel, onUpdate, onRemove, onExpand]
+  );
 
   return (
     <div className="table_days">
@@ -459,15 +493,7 @@ const TableData = () => {
           indentSize={0}
           expandable={expandable}
           summary={addline}
-          onRow={(record) => ({
-            ...record,
-            isEditedKey: record.key === editedKey,
-            onEdit,
-            onCancel,
-            onUpdate,
-            onRemove,
-            onExpand,
-          })}
+          onRow={onRow}
         />
       )}
     </div>
