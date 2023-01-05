@@ -68,26 +68,27 @@ const TableData = () => {
         if (monthIndex > -1) {
           const monthFound = monthsList[monthIndex];
 
+          const lastDay = [...monthFound.children, day].sort(
+            (a, b) =>
+              new Date((b as IDay).date).getTime() -
+              new Date((a as IDay).date).getTime()
+          )[0];
+
           monthsList[monthIndex] = {
             ...monthFound,
-            production: summa(monthFound.production, day.production),
-            total_consumed: summa(
-              monthFound.total_consumed,
-              day.total_consumed
-            ),
-            ZBC_consumed: summa(monthFound.ZBC_consumed, day.ZBC_consumed),
-            generation: summa(monthFound.generation, day.generation),
+            production: lastDay.production,
+            total_consumed: lastDay.total_consumed,
+            ZBC_consumed: lastDay.ZBC_consumed,
+            generation: lastDay.generation,
             procentage: Number(
               Number(
-                ((monthFound.generation + day.generation) /
-                  (monthFound.total_consumed + day.total_consumed)) *
-                  100
+                (lastDay.generation / lastDay.total_consumed) * 100
               ).toFixed(2)
             ), //monthFound.procentage + day.procentage,
-            sold: summa(monthFound.sold, day.sold),
-            RUP_consumed: summa(monthFound.RUP_consumed, day.RUP_consumed),
-            power: null,
-            gkal: summa(monthFound.gkal, day.gkal),
+            sold: lastDay.sold,
+            RUP_consumed: lastDay.RUP_consumed,
+            power: lastDay.power,
+            gkal: lastDay.gkal,
             children: [...monthFound.children, day],
           };
         } else {
@@ -109,7 +110,7 @@ const TableData = () => {
             ),
             sold: day.sold,
             RUP_consumed: day.RUP_consumed,
-            power: null,
+            power: day.power,
             plus: false,
             gkal: day.gkal,
             index: monthsList.length,
@@ -121,11 +122,6 @@ const TableData = () => {
       setMonths(
         monthsList.map((month) => ({
           ...month,
-          power: +parseFloat(
-            "" +
-              month.children.reduce((a, b) => a + (b.power || 0), 0) /
-                month.children.length
-          ).toFixed(2),
           plus:
             month.children.reduce((a, b) => a + +b.plus, 0) >=
             month.children.length / 2,

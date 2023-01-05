@@ -10,10 +10,9 @@ export const getApiUrl = (): string => {
   let api_url = "";
 
   if (process.env.NODE_ENV === "development") {
-    api_url = "http://localhost:9082";
+    api_url = "http://localhost:5011";
   } else {
     api_url = window.location.href + "api";
-    // api_url = "http://10.1.15.244:5107";
   }
 
   return api_url;

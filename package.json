@@ -27,6 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "cross-env NODE_ENV=development react-scripts start",
     "build": "cross-env PUBLIC_URL=/electricity react-scripts build",
     "build_default": "cross-env react-scripts build",
     "test": "react-scripts test",
